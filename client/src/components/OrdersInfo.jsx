@@ -36,7 +36,7 @@ const OrdersInfo = ({ shippingAddress, total, status, updatedAt, id }) => {
 
 const Wrapper = styled.div`
   border-bottom: 1px gray solid;
-  padding: 1rem 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   h4,
@@ -61,6 +61,10 @@ const Wrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    .primary-btn {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
   }
 `
 

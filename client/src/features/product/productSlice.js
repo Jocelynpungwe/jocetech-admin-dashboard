@@ -6,16 +6,16 @@ const initialState = {
   products_loading: false,
   products_error: false,
   products: [],
-  featured_products: [],
-  single_product_loading: false,
-  single_product_error: false,
-  single_product: [],
-  single_product_review: [],
-  single_product_review_loading: false,
-  single_product_review_error: false,
-  page: 1,
-  numOfPages: 1,
-  recommanded_products: [],
+  filtered_products: [],
+  sort: 'price-lowest',
+  filters: {
+    text: '',
+    company: 'all',
+    category: 'all',
+    min_price: 0,
+    max_price: 0,
+    price: 0,
+  },
 }
 
 export const getAllProducts = createAsyncThunk(
@@ -23,6 +23,7 @@ export const getAllProducts = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await customeFetch.get('/products')
+
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -30,54 +31,101 @@ export const getAllProducts = createAsyncThunk(
   }
 )
 
-export const getSingleProduct = createAsyncThunk(
-  'product/getSingleProducts',
-  async (id, thunkAPI) => {
-    try {
-      const { data } = await customeFetch.get(`/products/${id}`)
-      const { product } = data
+// export const getSingleProduct = createAsyncThunk(
+//   'product/getSingleProducts',
+//   async (id, thunkAPI) => {
+//     try {
+//       const { data } = await customeFetch.get(`/products/${id}`)
 
-      thunkAPI.dispatch(
-        getRecommandedProduct({
-          products: thunkAPI.getState().products.products,
-          category: product.category,
-        })
-      )
-      return data
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg)
-    }
-  }
-)
+//       return data
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error.response.data.msg)
+//     }
+//   }
+// )
 
-export const getSingleProductReview = createAsyncThunk(
-  'product/getSingleProductReview',
-  async (id, thunkAPI) => {
-    try {
-      const { page } = thunkAPI.getState().products
-      const { data } = await customeFetch.get(
-        `/products/review/${id}?page=${page}`
-      )
-      return data
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg)
-    }
-  }
-)
+// export const getSingleProductReview = createAsyncThunk(
+//   'product/getSingleProductReview',
+//   async (id, thunkAPI) => {
+//     try {
+//       const { page } = thunkAPI.getState().products
+//       const { data } = await customeFetch.get(
+//         `/products/review/${id}?page=${page}`
+//       )
+//       return data
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error.response.data.msg)
+//     }
+//   }
+// )
 
 const productSlice = createSlice({
   name: 'Product',
   initialState,
   reducers: {
-    getRecommandedProduct: (state, { payload }) => {
-      const { products, category } = payload
+    sortProduct: (state) => {
+      const { sort, filtered_products } = state
+      let tempProducts = []
 
-      state.recommanded_products = products.filter(
-        (product) => product.category === category
-      )
+      if (sort === 'price-lowest') {
+        tempProducts = filtered_products.sort((a, b) => a.price - b.price)
+      }
+      if (sort === 'price-highest') {
+        tempProducts = filtered_products.sort((a, b) => b.price - a.price)
+      }
+      if (sort === 'name-a') {
+        tempProducts = filtered_products.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        )
+      }
+      if (sort === 'name-z') {
+        tempProducts = filtered_products.sort((a, b) =>
+          b.name.localeCompare(a.name)
+        )
+      }
+
+      state.filtered_products = tempProducts
     },
-    changePage: (state, { payload }) => {
-      state.page = payload
+    updateSort: (state, { payload }) => {
+      state.sort = payload
+    },
+    filterProducs: (state) => {
+      const { products } = state
+      const { text, category, company, price } = state.filters
+      let tempProducts = [...products]
+      if (text) {
+        tempProducts = tempProducts.filter((product) =>
+          product.name.toLowerCase().startsWith(text)
+        )
+      }
+      if (category !== 'all') {
+        tempProducts = tempProducts.filter(
+          (product) => product.category === category
+        )
+      }
+      if (company !== 'all') {
+        tempProducts = tempProducts.filter(
+          (product) => product.company === company
+        )
+      }
+
+      // filter by price
+      tempProducts = tempProducts.filter((product) => product.price <= price)
+
+      console.log(tempProducts)
+
+      state.filtered_products = tempProducts
+    },
+    updateFilters: (state, { payload }) => {
+      const { name, value } = payload
+      state.filters[name] = value
+    },
+    clearFilters: (state) => {
+      state.filters = {
+        ...initialState.filters,
+        price: state.filters.max_price,
+        max_price: state.filters.max_price,
+      }
     },
   },
   extraReducers: (builder) => {
@@ -87,53 +135,29 @@ const productSlice = createSlice({
         state.products_error = false
       })
       .addCase(getAllProducts.fulfilled, (state, { payload }) => {
-        const { products } = payload
         state.products_loading = false
         state.products_error = false
+        const { products } = payload
+        let maxPrice = products.map((p) => p.price)
+        maxPrice = Math.max(...maxPrice)
         state.products = products
-        state.featured_products = products.filter((product) => {
-          return product.featured === true
-        })
+        state.filtered_products = products
+        state.filters.max_price = maxPrice
+        state.filters.price = maxPrice
       })
       .addCase(getAllProducts.rejected, (state, { payload }) => {
         state.products_loading = false
         state.products_error = true
         toast.error(payload)
       })
-      .addCase(getSingleProduct.pending, (state) => {
-        state.single_product_loading = true
-        state.single_product_error = false
-      })
-      .addCase(getSingleProduct.fulfilled, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = false
-        const { product } = payload
-        state.single_product = product
-        state.page = 1
-      })
-      .addCase(getSingleProduct.rejected, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = true
-        toast.error(payload)
-      })
-      .addCase(getSingleProductReview.pending, (state) => {
-        state.single_product_review_loading = true
-        state.single_product_review_error = false
-      })
-      .addCase(getSingleProductReview.fulfilled, (state, { payload }) => {
-        const { reviews, numOfPages } = payload
-        state.single_product_review_loading = false
-        state.single_product_review_error = false
-        state.single_product_review = reviews
-        state.numOfPages = numOfPages
-      })
-      .addCase(getSingleProductReview.rejected, (state, { payload }) => {
-        state.single_product_review_loading = false
-        state.single_product_review_error = true
-        toast.error(payload)
-      })
   },
 })
 
-export const { getRecommandedProduct, changePage } = productSlice.actions
+export const {
+  sortProduct,
+  filterProducs,
+  updateFilters,
+  updateSort,
+  clearFilters,
+} = productSlice.actions
 export default productSlice.reducer
