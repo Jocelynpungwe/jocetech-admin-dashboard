@@ -7,7 +7,7 @@ import ReviewsPage from './ReviewsPage'
 import SettingsPage from './SettingsPage'
 import SharedLayout from './SharedLayout'
 import UsersAndPromotionPage from './UsersAndPromotionPage'
-
+import AddProductPage from './AddProductPage'
 export {
   CustomersPage,
   MainDashboard,
@@ -18,4 +18,5 @@ export {
   SettingsPage,
   SharedLayout,
   UsersAndPromotionPage,
+  AddProductPage,
 }

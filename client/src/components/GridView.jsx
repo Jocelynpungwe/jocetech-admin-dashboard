@@ -14,6 +14,7 @@ const GridView = ({ products }) => {
 
 const Wrapper = styled.section`
   display: grid;
+  grid-column: 1.5rem;
 
   @media (min-width: 768px) {
     grid-template-columns: 1fr 1fr;

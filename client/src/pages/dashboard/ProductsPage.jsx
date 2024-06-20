@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { ProductList, Sort, Filters, AddItems } from '../../components'
+import { ProductList, Filters, AddItems } from '../../components'
 
 const ProductsPage = () => {
   return (
@@ -11,17 +10,20 @@ const ProductsPage = () => {
         label="Add Product"
         linkName="new-product"
       />
-      <div>
+      <div className="container">
         <Filters />
-        <div>
-          <Sort />
-          <ProductList />
-        </div>
+        <ProductList />
       </div>
+      {/* ADD PAGINATION */}
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  .container {
+    background-color: var(--white);
+    padding: 1.5rem;
+  }
+`
 
 export default ProductsPage

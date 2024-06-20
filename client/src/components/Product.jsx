@@ -13,20 +13,25 @@ const Product = ({ image, name, price, id }) => {
         <p>{formatPrice(price)}</p>
       </section>
       <footer>
-        <Link>
+        <Link className="secondary-btn">
           <FaEdit />
           Edit
         </Link>
-        <button>
+        <button className="secondary-btn btn-danger">
           <FaTrash />
           Delete
         </button>
+        {/* FIX BUTTON SIZES */}
       </footer>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.article`
+  box-shadow: var(--shadow-4);
+  border-radius: var(--radius);
+  padding: 1rem;
+
   img {
     width: 100%;
     height: 175px;
@@ -35,21 +40,23 @@ const Wrapper = styled.article`
     border-radius: var(--radius);
     transition: var(--transition);
   }
+  h5,
+  p {
+    opacity: 0.5;
+  }
+
+  h5 {
+    margin: 5px 0;
+  }
+
+  p {
+    margin: 0 0 5px 0;
+  }
   footer {
     margin-top: 1rem;
     display: flex;
-    justify-content: space-between;
+    column-gap: 10px;
     align-items: center;
-  }
-  footer h5,
-  footer p {
-    margin-bottom: 0;
-    font-weight: 400;
-  }
-
-  footer p {
-    color: var(--secondy-chocolate);
-    letter-spacing: var(--spacing);
   }
 `
 

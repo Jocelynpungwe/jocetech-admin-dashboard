@@ -12,6 +12,7 @@ import {
   SettingsPage,
   SharedLayout,
   UsersAndPromotionPage,
+  AddProductPage,
 } from './pages/dashboard'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           >
             <Route index element={<MainDashboard />} />
             <Route path="products" element={<ProductsPage />} />
+            <Route path="new-product" element={<AddProductPage />} />
             <Route path="customers" element={<CustomersPage />} />
             <Route path="orders" element={<OrderPage />} />
             <Route path="users" element={<UsersAndPromotionPage />} />

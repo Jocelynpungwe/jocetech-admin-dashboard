@@ -18,8 +18,8 @@ import GridView from './GridView'
 import Product from './Product'
 import Error from './Error'
 import Filters from './Filters'
-import Sort from './Sort'
 import AddItems from './AddItems'
+
 export {
   BigSidebar,
   Navbar,
@@ -41,6 +41,5 @@ export {
   Product,
   Error,
   Filters,
-  Sort,
   AddItems,
 }

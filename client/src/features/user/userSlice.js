@@ -6,6 +6,7 @@ import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
 } from '../../utils/localStorage'
+import { clearFilters } from '../product/productSlice'
 
 const initialState = {
   isLoading: false,
@@ -45,6 +46,7 @@ export const logoutUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await customeFetch.get('/auth/logout')
+      thunkAPI.dispatch(clearFilters())
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -125,14 +127,13 @@ const userSlice = createSlice({
       .addCase(getAllUser.fulfilled, (state, { payload }) => {
         state.isLoading = false
         state.isError = false
-        console.log(payload)
+
         state.allUser = payload
       })
       .addCase(getAllUser.rejected, (state, { payload }) => {
         state.isLoading = false
         state.isError = true
         toast.error(payload)
-        console.log(payload)
       })
   },
 })
