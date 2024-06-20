@@ -7,16 +7,16 @@ import { getAllProducts } from '../features/product/productSlice'
 
 const ProductList = () => {
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getAllProducts())
-  }, [])
-
   const {
     filtered_products: products,
     products_loading: loading,
     products_error: error,
+    single_product,
   } = useSelector((store) => store.products)
+
+  useEffect(() => {
+    dispatch(getAllProducts())
+  }, [single_product])
 
   if (loading) {
     return <Loading />

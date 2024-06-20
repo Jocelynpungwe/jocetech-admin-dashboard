@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ProductList, Filters, AddItems } from '../../components'
+import { clearNewProduct } from '../../features/product/productSlice'
 
 const ProductsPage = () => {
   return (
@@ -9,6 +10,7 @@ const ProductsPage = () => {
         name="All Products"
         label="Add Product"
         linkName="new-product"
+        clear={clearNewProduct}
       />
       <div className="container">
         <Filters />

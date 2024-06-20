@@ -1,17 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import {
+  createProduct,
+  updateProduct,
+  deleteProduct,
   handleChange,
   handleClick,
   uploadImage,
 } from '../../features/product/productSlice'
-
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 const AddProductPage = () => {
-  const { new_products } = useSelector((store) => store.products)
+  const { new_products, isEdit } = useSelector((store) => store.products)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   console.log(new_products)
+  console.log(isEdit)
   const catergoryOptions = [
     'none',
     'phones',
@@ -26,6 +32,29 @@ const AddProductPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const { price, inventory, company, category } = new_products
+
+    if (!price || !inventory) {
+      toast.error(
+        `Please provide ${
+          !price ? 'price' : !inventory ? 'inventory' : 'all fields'
+        }`
+      )
+      return
+    }
+
+    if (company === 'none' || category === 'none') {
+      toast.error('Please provide company and category')
+      return
+    }
+
+    if (!isEdit) {
+      dispatch(createProduct(new_products))
+      navigate('/products')
+      return
+    }
+
+    dispatch(updateProduct({ id: new_products.id, product: new_products }))
   }
 
   const handlefileUpload = (e) => {
@@ -66,7 +95,6 @@ const AddProductPage = () => {
               type="text"
               placeholder="Type Here"
               inputMode="numeric"
-              pattern="[0-9]"
               id="price"
               name="price"
               value={new_products.price}
@@ -112,8 +140,8 @@ const AddProductPage = () => {
         <div>
           <label htmlFor="image">Images</label>
           <div className="form-image-container">
-            {new_products.images.length > 0 &&
-              new_products.images.map((image, index) => {
+            {new_products.image.length > 0 &&
+              new_products.image.map((image, index) => {
                 return <img key={index} src={image} alt="new product" />
               })}
           </div>
@@ -210,7 +238,6 @@ const AddProductPage = () => {
               )
             }
             value={new_products.valueColor}
-            required
           />
           <button
             type="button"
@@ -228,6 +255,7 @@ const AddProductPage = () => {
               type="checkbox"
               id="freeShipping"
               name="freeShipping"
+              value={new_products.freeShipping}
               onChange={(e) =>
                 dispatch(
                   handleChange({
@@ -238,7 +266,6 @@ const AddProductPage = () => {
                   })
                 )
               }
-              required
             />
           </div>
 
@@ -248,6 +275,7 @@ const AddProductPage = () => {
               type="checkbox"
               id="featured"
               name="featured"
+              value={new_products.featured}
               onChange={(e) =>
                 dispatch(
                   handleChange({
@@ -258,7 +286,6 @@ const AddProductPage = () => {
                   })
                 )
               }
-              required
             />
           </div>
         </div>
@@ -269,7 +296,6 @@ const AddProductPage = () => {
             type="text"
             placeholder="Type here"
             inputMode="numeric"
-            pattern="[0-9]"
             id="inventory"
             name="inventory"
             onChange={(e) =>
@@ -283,7 +309,6 @@ const AddProductPage = () => {
             }
             value={new_products.inventory}
             className="number-input"
-            required
           />
         </div>
 

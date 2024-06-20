@@ -16,7 +16,7 @@ const initialState = {
   new_products: {
     name: '',
     price: 0,
-    images: [],
+    image: [],
     colors: ['#222', '#0000'],
     valueColor: '',
     description: '',
@@ -36,8 +36,18 @@ const initialState = {
     ],
     valueBox: '',
   },
+  isEdit: false,
+  editId: '',
   uploadLoading: false,
   uploadError: false,
+  single_product_loading: false,
+  single_product_error: false,
+  single_product: [],
+  single_product_review: [],
+  single_product_review_loading: false,
+  single_product_review_error: false,
+  page: 1,
+  numOfPages: 1,
 }
 
 export const getAllProducts = createAsyncThunk(
@@ -62,6 +72,71 @@ export const uploadImage = createAsyncThunk(
         },
       })
 
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const getSingleProduct = createAsyncThunk(
+  'product/getSingleProduct',
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await customeFetch.get(`/products/${id}`)
+
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const getSingleProductReview = createAsyncThunk(
+  'product/getSingleProductReview',
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await customeFetch.get(`/products/review/${id}?page=1`)
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const createProduct = createAsyncThunk(
+  'product/createProduct',
+  async (newProduct, thunkAPI) => {
+    try {
+      const { data } = await customeFetch.post('/products', newProduct)
+
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const updateProduct = createAsyncThunk(
+  'product/updateProduct',
+  async (newProduct, thunkAPI) => {
+    const { id, product } = newProduct
+    try {
+      const { data } = await customeFetch.patch(`/products/${id}`, product)
+      console.log(data)
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const deleteProduct = createAsyncThunk(
+  'product/deleteProduct',
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await customeFetch.delete(`/products/${id}`)
+      console.log(data)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -109,6 +184,25 @@ const productSlice = createSlice({
         state.new_products.colors = newColors
         state.new_products.valueColor = ''
       }
+    },
+    toggleEdit: (state, { payload }) => {
+      const { id } = payload
+      state.isEdit = !state.isEdit
+      state.editId = id
+    },
+    clearNewProduct: (state) => {
+      state.new_products.name = initialState.new_products.name
+      state.new_products.price = initialState.new_products.price
+      state.new_products.description = initialState.new_products.description
+      state.new_products.image = initialState.new_products.image
+      state.new_products.category = initialState.new_products.category
+      state.new_products.company = initialState.new_products.company
+      state.new_products.colors = initialState.new_products.colors
+      state.new_products.freeShipping = initialState.new_products.freeShipping
+      state.new_products.featured = initialState.new_products.featured
+      state.new_products.inventory = initialState.new_products.inventory
+      state.new_products.features = initialState.new_products.features
+      state.new_products.box = initialState.new_products.box
     },
     sortProduct: (state) => {
       const { sort, filtered_products } = state
@@ -196,13 +290,107 @@ const productSlice = createSlice({
         const { image } = payload
         state.uploadLoading = false
         state.uploadError = false
-        let tempImageArray = [...state.new_products.images, image]
-        console.log(tempImageArray)
-        state.new_products.images = tempImageArray
+        let tempImageArray = [...state.new_products.image, image]
+        state.new_products.image = tempImageArray
       })
       .addCase(uploadImage.rejected, (state, { payload }) => {
         state.uploadLoading = false
         state.uploadError = true
+        toast.error(payload)
+      })
+      .addCase(getSingleProduct.pending, (state) => {
+        state.single_product_loading = true
+        state.single_product_error = false
+      })
+      .addCase(getSingleProduct.fulfilled, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = false
+        const { product } = payload
+        console.log(product)
+        state.single_product = product
+        state.page = 1
+        state.new_products.name = product.name
+        state.new_products.price = product.price
+        state.new_products.description = product.description
+        state.new_products.image = product.image
+        state.new_products.category = product.category
+        state.new_products.company = product.company
+        state.new_products.colors = product.colors
+        state.new_products.freeShipping = product.freeShipping
+        state.new_products.featured = product.featured
+        state.new_products.inventory = product.inventory
+        state.new_products.features = product.features
+        state.new_products.box = product.box
+      })
+      .addCase(getSingleProduct.rejected, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = true
+        toast.error(payload)
+      })
+      .addCase(getSingleProductReview.pending, (state) => {
+        state.single_product_review_loading = true
+        state.single_product_review_error = false
+        const { product } = payload
+        state.single_product = product
+      })
+      .addCase(getSingleProductReview.fulfilled, (state, { payload }) => {
+        const { reviews, numOfPages } = payload
+        state.single_product_review_loading = false
+        state.single_product_review_error = false
+        state.single_product_review = reviews
+        state.numOfPages = numOfPages
+      })
+      .addCase(getSingleProductReview.rejected, (state, { payload }) => {
+        state.single_product_review_loading = false
+        state.single_product_review_error = true
+        toast.error(payload)
+      })
+      .addCase(createProduct.pending, (state) => {
+        state.single_product_loading = true
+        state.single_product_error = false
+      })
+      .addCase(createProduct.fulfilled, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = false
+        const { product } = payload
+        state.single_product = product
+        toast.success('New Product Created')
+      })
+      .addCase(createProduct.rejected, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = true
+        toast.error(payload)
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.single_product_loading = true
+        state.single_product_error = false
+      })
+      .addCase(updateProduct.fulfilled, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = false
+        const { product } = payload
+        state.single_product = product
+        toast.success('Product Edited Successfully')
+      })
+      .addCase(updateProduct.rejected, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = true
+        toast.error(payload)
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.single_product_loading = true
+        state.single_product_error = false
+      })
+      .addCase(deleteProduct.fulfilled, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = false
+        const { msg } = payload
+        state.single_product = []
+        toast.success(msg)
+      })
+      .addCase(deleteProduct.rejected, (state, { payload }) => {
+        state.single_product_loading = false
+        state.single_product_error = true
         toast.error(payload)
       })
   },
@@ -211,6 +399,8 @@ const productSlice = createSlice({
 export const {
   handleChange,
   handleClick,
+  toggleEdit,
+  clearNewProduct,
   sortProduct,
   filterProducs,
   updateFilters,

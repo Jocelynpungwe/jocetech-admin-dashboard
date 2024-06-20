@@ -19,6 +19,9 @@ import Product from './Product'
 import Error from './Error'
 import Filters from './Filters'
 import AddItems from './AddItems'
+import ProductImages from './ProductImages'
+import Stars from './Stars'
+import Reviews from './Reviews'
 
 export {
   BigSidebar,
@@ -42,4 +45,7 @@ export {
   Error,
   Filters,
   AddItems,
+  ProductImages,
+  Stars,
+  Reviews,
 }

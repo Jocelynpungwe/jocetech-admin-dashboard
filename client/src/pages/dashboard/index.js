@@ -8,6 +8,7 @@ import SettingsPage from './SettingsPage'
 import SharedLayout from './SharedLayout'
 import UsersAndPromotionPage from './UsersAndPromotionPage'
 import AddProductPage from './AddProductPage'
+import SingleProductPage from './SingleProductPage'
 export {
   CustomersPage,
   MainDashboard,
@@ -19,4 +20,5 @@ export {
   SharedLayout,
   UsersAndPromotionPage,
   AddProductPage,
+  SingleProductPage,
 }
