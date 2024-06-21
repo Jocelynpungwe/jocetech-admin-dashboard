@@ -123,7 +123,7 @@ export const updateProduct = createAsyncThunk(
     const { id, product } = newProduct
     try {
       const { data } = await customeFetch.patch(`/products/${id}`, product)
-      console.log(data)
+
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -136,7 +136,7 @@ export const deleteProduct = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const { data } = await customeFetch.delete(`/products/${id}`)
-      console.log(data)
+
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)

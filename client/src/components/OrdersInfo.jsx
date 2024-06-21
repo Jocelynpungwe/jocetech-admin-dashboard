@@ -27,7 +27,7 @@ const OrdersInfo = ({ shippingAddress, total, status, updatedAt, id }) => {
         {status}
       </span>
 
-      <Link to={`/order/${id}`} className="primary-btn">
+      <Link to={`/orders/${id}`} className="primary-btn">
         View Order
       </Link>
     </Wrapper>

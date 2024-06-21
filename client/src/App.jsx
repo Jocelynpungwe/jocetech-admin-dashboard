@@ -14,6 +14,7 @@ import {
   UsersAndPromotionPage,
   AddProductPage,
   SingleProductPage,
+  ViewOrderPage,
 } from './pages/dashboard'
 
 function App() {
@@ -33,8 +34,9 @@ function App() {
             <Route path="products" element={<ProductsPage />} />
             <Route path="products/:id" element={<SingleProductPage />} />
             <Route path="new-product" element={<AddProductPage />} />
-            <Route path="customers" element={<CustomersPage />} />
             <Route path="orders" element={<OrderPage />} />
+            <Route path="orders/:id" element={<ViewOrderPage />} />
+            <Route path="customers" element={<CustomersPage />} />
             <Route path="users" element={<UsersAndPromotionPage />} />
             <Route path="report" element={<ReportingAndAnalyticsPage />} />
             <Route path="reviews" element={<ReviewsPage />} />

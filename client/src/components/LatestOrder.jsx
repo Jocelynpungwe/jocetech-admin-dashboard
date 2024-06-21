@@ -2,13 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import OrdersInfo from './OrdersInfo'
 
-const LatestOrder = ({ orders }) => {
+const LatestOrder = ({ orders, page }) => {
   return (
     <Wrapper>
       <h4>Latest orders</h4>
-      {orders.slice(0, 5).map((order, index) => {
-        return <OrdersInfo {...order} />
-      })}
+      {page === 'order-page'
+        ? orders.map((order, index) => {
+            return <OrdersInfo {...order} key={index} />
+          })
+        : orders.slice(0, 5).map((order, index) => {
+            return <OrdersInfo {...order} key={index} />
+          })}
     </Wrapper>
   )
 }

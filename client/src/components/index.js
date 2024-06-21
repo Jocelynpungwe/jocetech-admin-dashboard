@@ -22,7 +22,7 @@ import AddItems from './AddItems'
 import ProductImages from './ProductImages'
 import Stars from './Stars'
 import Reviews from './Reviews'
-
+import Sort from './Sort'
 export {
   BigSidebar,
   Navbar,
@@ -48,4 +48,5 @@ export {
   ProductImages,
   Stars,
   Reviews,
+  Sort,
 }
