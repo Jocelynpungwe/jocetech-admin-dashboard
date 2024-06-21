@@ -15,6 +15,7 @@ const initialState = {
   allOrders: [],
   singleOrder: null,
   sortAllOrders: [],
+  status: 'pending',
   sort: 'all',
   orderState: [],
   monthlyOrder: [],
@@ -76,6 +77,25 @@ export const getSingleOrders = createAsyncThunk(
   }
 )
 
+export const completeOrder = createAsyncThunk(
+  'order/completeOrder',
+  async (updateStatus, thunkAPI) => {
+    const { id, status } = updateStatus
+    try {
+      const { data } = await customeFetch.patch(`/orders/complete/${id}`, {
+        status,
+      })
+      thunkAPI.dispatch(getAllOrders())
+      return data
+    } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser())
+      }
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
 export const updateOrder = createAsyncThunk(
   'order/update',
   async (item, thunkAPI) => {
@@ -114,6 +134,9 @@ const orderSlice = createSlice({
     updateSort: (state, { payload }) => {
       state.sort = payload
     },
+    updateStatus: (state, { payload }) => {
+      state.status = payload
+    },
     toggleAddress: (state, { payload }) => {
       const { value, name } = payload
       state.address[name] = value
@@ -144,6 +167,7 @@ const orderSlice = createSlice({
         const { orders } = payload
         state.orderLoading = false
         state.orderError = false
+        console.log(orders)
         state.allOrders = orders
         state.sortAllOrders = orders
       })
@@ -176,11 +200,13 @@ const orderSlice = createSlice({
         state.orderLoading = false
         state.orderError = false
         state.singleOrder = order
+        state.status = order.status
       })
       .addCase(getSingleOrders.rejected, (state, { payload }) => {
         state.orderLoading = false
         state.orderError = true
         toast.error(payload)
+        console.log(payload)
       })
       .addCase(updateOrder.pending, (state, { payload }) => {
         state.orderLoading = true
@@ -195,9 +221,30 @@ const orderSlice = createSlice({
         state.orderError = true
         toast.error(payload)
       })
+      .addCase(completeOrder.pending, (state) => {
+        state.orderLoading = true
+        state.orderError = false
+      })
+      .addCase(completeOrder.fulfilled, (state, { payload }) => {
+        const { order } = payload
+        state.orderLoading = false
+        state.orderError = false
+        state.singleOrder = order
+      })
+      .addCase(completeOrder.rejected, (state, { payload }) => {
+        state.orderLoading = false
+        state.orderError = true
+        toast.error(payload)
+      })
   },
 })
 
-export const { sortOrder, updateSort, toggleAddress, totalSale, clearOrder } =
-  orderSlice.actions
+export const {
+  sortOrder,
+  updateSort,
+  updateStatus,
+  toggleAddress,
+  totalSale,
+  clearOrder,
+} = orderSlice.actions
 export default orderSlice.reducer

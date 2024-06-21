@@ -23,6 +23,9 @@ import ProductImages from './ProductImages'
 import Stars from './Stars'
 import Reviews from './Reviews'
 import Sort from './Sort'
+import ProductInfo from './ProductInfo'
+import EditAndDelete from './EditAndDelete'
+import OrderOptions from './OrderOptions'
 export {
   BigSidebar,
   Navbar,
@@ -49,4 +52,7 @@ export {
   Stars,
   Reviews,
   Sort,
+  ProductInfo,
+  EditAndDelete,
+  OrderOptions,
 }

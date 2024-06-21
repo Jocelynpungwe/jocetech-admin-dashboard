@@ -189,6 +189,7 @@ const productSlice = createSlice({
       const { id } = payload
       state.isEdit = !state.isEdit
       state.editId = id
+      console.log(id)
     },
     clearNewProduct: (state) => {
       state.new_products.name = initialState.new_products.name

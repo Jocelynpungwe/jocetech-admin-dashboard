@@ -10,6 +10,7 @@ const {
   createOrder,
   updateOrder,
   showOrderStats,
+  completeOrder,
 } = require('../controllers/orderController')
 
 router.post('/', authenticationMiddleware, createOrder)
@@ -30,5 +31,11 @@ router.get('/showAllMyOrders', authenticationMiddleware, getCurrentUserOrders)
 router.get('/:id', authenticationMiddleware, getSingleOrders)
 
 router.patch('/:id', authenticationMiddleware, updateOrder)
+router.patch(
+  '/complete/:id',
+  authenticationMiddleware,
+  authorizeMiddleware('admin'),
+  completeOrder
+)
 
 module.exports = router
