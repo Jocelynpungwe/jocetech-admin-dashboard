@@ -13,6 +13,8 @@ const initialState = {
   isError: false,
   isSideBarOpen: false,
   allUser: [],
+  singleUser: [],
+  singleUserOrder: [],
   user: getUserFromLocalStorage(),
 }
 
@@ -59,6 +61,30 @@ export const getAllUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await customeFetch.get('/user')
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const getSingleUser = createAsyncThunk(
+  'user/getSingleUser',
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await customeFetch.get(`/user/${id}`)
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const getSingleUserOrder = createAsyncThunk(
+  'user/getSingleUserOrder',
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await customeFetch.get(`/orders/user/${id}`)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -127,10 +153,41 @@ const userSlice = createSlice({
       .addCase(getAllUser.fulfilled, (state, { payload }) => {
         state.isLoading = false
         state.isError = false
-
-        state.allUser = payload
+        const { users } = payload
+        state.allUser = users
       })
       .addCase(getAllUser.rejected, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = true
+        toast.error(payload)
+      })
+      .addCase(getSingleUser.pending, (state, { payload }) => {
+        state.isLoading = true
+        state.isError = false
+      })
+      .addCase(getSingleUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = false
+        const { user } = payload
+        console.log(user)
+        state.singleUser = user
+      })
+      .addCase(getSingleUser.rejected, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = true
+        toast.error(payload)
+      })
+      .addCase(getSingleUserOrder.pending, (state, { payload }) => {
+        state.isLoading = true
+        state.isError = false
+      })
+      .addCase(getSingleUserOrder.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = false
+        const { order } = payload
+        state.singleUserOrder = order
+      })
+      .addCase(getSingleUserOrder.rejected, (state, { payload }) => {
         state.isLoading = false
         state.isError = true
         toast.error(payload)

@@ -6,6 +6,7 @@ const authorizeMiddleware = require('../middleware/authorize')
 const {
   getAllOrders,
   getSingleOrders,
+  getSingleUserOrder,
   getCurrentUserOrders,
   createOrder,
   updateOrder,
@@ -19,6 +20,12 @@ router.get(
   authenticationMiddleware,
   authorizeMiddleware('admin'),
   getAllOrders
+)
+router.get(
+  '/user/:id',
+  authenticationMiddleware,
+  authorizeMiddleware('admin'),
+  getSingleUserOrder
 )
 
 router.get(

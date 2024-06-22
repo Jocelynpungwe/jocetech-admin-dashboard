@@ -10,6 +10,7 @@ import UsersAndPromotionPage from './UsersAndPromotionPage'
 import AddProductPage from './AddProductPage'
 import SingleProductPage from './SingleProductPage'
 import ViewOrderPage from './ViewOrderPage'
+import SingleCustomerPage from './SingleCustomerPage'
 
 export {
   CustomersPage,
@@ -24,4 +25,5 @@ export {
   AddProductPage,
   SingleProductPage,
   ViewOrderPage,
+  SingleCustomerPage,
 }

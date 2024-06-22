@@ -1,18 +1,14 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import customeFetch from '../../utils/customeFetch'
-import { getSingleProductReview } from '../product/productSlice'
+
 import { toast } from 'react-toastify'
 
 const initialState = {
   allReviews: [],
-  title: '',
-  comment: '',
-  rating: 1,
   isLoading: false,
   isError: false,
-  isEdit: false,
-  editReviewId: '',
-  newReview: null,
+  singleReview: null,
+  singleUserReviews: [],
 }
 
 export const getAllReviews = createAsyncThunk(
@@ -20,6 +16,7 @@ export const getAllReviews = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await customeFetch.get('/reviews')
+      console.log(data)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -27,12 +24,12 @@ export const getAllReviews = createAsyncThunk(
   }
 )
 
-export const addReview = createAsyncThunk(
-  'review/addReview',
-  async (review, thunkAPI) => {
+export const getSingleReview = createAsyncThunk(
+  'review/getSingleReview',
+  async (id, thunkAPI) => {
     try {
-      const { data } = await customeFetch.post('/reviews', review)
-
+      const { data } = await customeFetch.get(`/reviews/${id}`)
+      console.log(data)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -40,26 +37,12 @@ export const addReview = createAsyncThunk(
   }
 )
 
-export const updateReview = createAsyncThunk(
-  'review/updateReview',
-  async (reviews, thunkAPI) => {
-    const { reviewId, review } = reviews
+export const getSingleUserReview = createAsyncThunk(
+  'review/getSingleUserReview',
+  async (id, thunkAPI) => {
     try {
-      const { data } = await customeFetch.patch(`/reviews/${reviewId}`, review)
-
-      return data
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg)
-    }
-  }
-)
-
-export const deleteReview = createAsyncThunk(
-  'review/deleteReview',
-  async (reviewsId, thunkAPI) => {
-    try {
-      const { data } = await customeFetch.delete(`/reviews/${reviewsId}`)
-
+      const { data } = await customeFetch.get(`/reviews/user/${id}`)
+      console.log(data)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -70,29 +53,7 @@ export const deleteReview = createAsyncThunk(
 const reviewSlice = createSlice({
   name: 'review',
   initialState,
-  reducers: {
-    handleReviewChange: (state, { payload }) => {
-      const { name, value } = payload
-      state[name] = value
-    },
-    handleEditReview: (state, { payload }) => {
-      const { reviewId, reviews } = payload
-
-      const editReview = reviews.find((review) => {
-        return review._id === reviewId
-      })
-
-      state.isEdit = true
-      state.editReviewId = reviewId
-      state.comment = editReview.comment
-      state.rating = editReview.rating
-      state.title = editReview.title
-      toast.success('Edit Review Mode Selected, Scroll Down')
-    },
-    clearReview: (state, { payload }) => {
-      state.newReview = null
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllReviews.pending, (state) => {
@@ -110,65 +71,34 @@ const reviewSlice = createSlice({
         state.isError = true
         toast.error(payload)
       })
-      .addCase(addReview.pending, (state) => {
+      .addCase(getSingleReview.pending, (state) => {
         state.isLoading = true
         state.isError = false
       })
-      .addCase(addReview.fulfilled, (state, { payload }) => {
+      .addCase(getSingleReview.fulfilled, (state, { payload }) => {
         const { review } = payload
         state.isLoading = false
         state.isError = false
-        state.isEdit = false
-        state.editReviewId = ''
-        state.comment = initialState.comment
-        state.rating = initialState.rating
-        state.title = initialState.title
-        state.newReview = review
-        toast.success('Review Added sucessfully')
+        state.singleReview = review
+        console.log(payload)
       })
-      .addCase(addReview.rejected, (state, { payload }) => {
+      .addCase(getSingleReview.rejected, (state, { payload }) => {
         state.isLoading = false
         state.isError = true
         toast.error(payload)
       })
-      .addCase(updateReview.pending, (state) => {
+      .addCase(getSingleUserReview.pending, (state) => {
         state.isLoading = true
         state.isError = false
       })
-      .addCase(updateReview.fulfilled, (state, { payload }) => {
-        const { review } = payload
+      .addCase(getSingleUserReview.fulfilled, (state, { payload }) => {
+        const { reviews } = payload
         state.isLoading = false
         state.isError = false
-        state.isEdit = false
-        state.editReviewId = ''
-        state.comment = initialState.comment
-        state.rating = initialState.rating
-        state.title = initialState.title
-        state.newReview = review
-        toast.success('Review Updated sucessfully')
+        state.singleUserReviews = reviews
+        console.log(payload)
       })
-      .addCase(updateReview.rejected, (state, { payload }) => {
-        state.isLoading = false
-        state.isError = true
-        toast.error(payload)
-      })
-      .addCase(deleteReview.pending, (state) => {
-        state.isLoading = true
-        state.isError = false
-      })
-      .addCase(deleteReview.fulfilled, (state, { payload }) => {
-        const { msg } = payload
-        state.isLoading = false
-        state.isError = false
-        state.isEdit = false
-        state.editReviewId = ''
-        state.comment = initialState.comment
-        state.rating = initialState.rating
-        state.title = initialState.title
-        state.newReview = null
-        toast.success(msg)
-      })
-      .addCase(deleteReview.rejected, (state, { payload }) => {
+      .addCase(getSingleUserReview.rejected, (state, { payload }) => {
         state.isLoading = false
         state.isError = true
         toast.error(payload)

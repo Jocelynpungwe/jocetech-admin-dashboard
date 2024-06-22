@@ -182,9 +182,16 @@ const completeOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ order })
 }
 
+const getSingleUserOrder = async (req, res) => {
+  const { id: userId } = req.params
+  const order = await Order.find({ user: userId })
+  res.status(StatusCodes.OK).json({ order })
+}
+
 module.exports = {
   getAllOrders,
   getSingleOrders,
+  getSingleUserOrder,
   getCurrentUserOrders,
   createOrder,
   updateOrder,

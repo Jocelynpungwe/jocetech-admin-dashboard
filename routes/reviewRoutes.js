@@ -8,18 +8,21 @@ const {
   updateReview,
   deleteReview,
   getSingleProductReviews,
+  getSingleUserReview,
 } = require('../controllers/reviewController')
 
 const authenticationMiddleware = require('../middleware/authentication')
+const authorizePermition = require('../middleware/authorize')
 
 router.get('/', authenticationMiddleware, getAllReviews)
 router.get('/:id', authenticationMiddleware, getSingleReview)
-router.post(
-  '/',
+router.get(
+  '/user/:id',
   authenticationMiddleware,
-
-  createReview
+  authorizePermition('admin'),
+  getSingleUserReview
 )
+router.post('/', authenticationMiddleware, createReview)
 router.patch('/:id', authenticationMiddleware, updateReview)
 router.delete('/:id', authenticationMiddleware, deleteReview)
 

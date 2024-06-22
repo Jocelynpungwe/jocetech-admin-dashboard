@@ -307,7 +307,7 @@ const productSlice = createSlice({
         state.single_product_loading = false
         state.single_product_error = false
         const { product } = payload
-        console.log(product)
+
         state.single_product = product
         state.page = 1
         state.new_products.name = product.name
@@ -331,8 +331,6 @@ const productSlice = createSlice({
       .addCase(getSingleProductReview.pending, (state) => {
         state.single_product_review_loading = true
         state.single_product_review_error = false
-        const { product } = payload
-        state.single_product = product
       })
       .addCase(getSingleProductReview.fulfilled, (state, { payload }) => {
         const { reviews, numOfPages } = payload

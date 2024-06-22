@@ -118,6 +118,12 @@ const getSingleProductReviews = async (req, res) => {
   res.status(StatusCodes.OK).json({ reviews, count: totalReviews, numOfPages })
 }
 
+const getSingleUserReview = async (req, res) => {
+  const { id: userId } = req.params
+  const reviews = await Review.find({ user: userId })
+  res.status(StatusCodes.OK).json({ reviews })
+}
+
 module.exports = {
   createReview,
   getAllReviews,
@@ -125,4 +131,5 @@ module.exports = {
   updateReview,
   deleteReview,
   getSingleProductReviews,
+  getSingleUserReview,
 }

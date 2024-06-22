@@ -35,6 +35,7 @@ export const getAllOrders = createAsyncThunk(
     try {
       const { data } = await customeFetch.get('/orders')
       thunkAPI.dispatch(totalSale(data))
+      console.log(data)
       return data
     } catch (error) {
       if (error.response.status === 401) {
@@ -206,7 +207,6 @@ const orderSlice = createSlice({
         state.orderLoading = false
         state.orderError = true
         toast.error(payload)
-        console.log(payload)
       })
       .addCase(updateOrder.pending, (state, { payload }) => {
         state.orderLoading = true

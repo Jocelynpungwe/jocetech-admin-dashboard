@@ -26,6 +26,8 @@ import Sort from './Sort'
 import ProductInfo from './ProductInfo'
 import EditAndDelete from './EditAndDelete'
 import OrderOptions from './OrderOptions'
+import UserInfo from './UserInfo'
+
 export {
   BigSidebar,
   Navbar,
@@ -55,4 +57,5 @@ export {
   ProductInfo,
   EditAndDelete,
   OrderOptions,
+  UserInfo,
 }

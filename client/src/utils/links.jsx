@@ -25,15 +25,9 @@ const links = [
   },
   {
     id: 4,
-    text: 'users',
-    path: 'users',
+    text: 'customers',
+    path: 'customers',
     icon: <ImProfile />,
-  },
-  {
-    id: 5,
-    text: 'report',
-    path: 'report',
-    icon: <FaRegRectangleList />,
   },
   {
     id: 5,
