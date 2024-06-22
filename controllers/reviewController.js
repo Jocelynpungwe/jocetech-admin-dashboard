@@ -31,7 +31,7 @@ const getAllReviews = async (req, res) => {
   const reviews = await Review.find({})
     .populate({
       path: 'product',
-      select: 'name company price',
+      select: 'name company price image',
     })
     .populate({
       path: 'user',
@@ -46,7 +46,7 @@ const getSingleReview = async (req, res) => {
   const review = await Review.findOne({ _id: reviewId })
     .populate({
       path: 'product',
-      select: 'name company price',
+      select: 'name company price image',
     })
     .populate({
       path: 'user',
@@ -120,7 +120,10 @@ const getSingleProductReviews = async (req, res) => {
 
 const getSingleUserReview = async (req, res) => {
   const { id: userId } = req.params
-  const reviews = await Review.find({ user: userId })
+  const reviews = await Review.find({ user: userId }).populate({
+    path: 'product',
+    select: 'name price image',
+  })
   res.status(StatusCodes.OK).json({ reviews })
 }
 

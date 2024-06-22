@@ -6,9 +6,10 @@ import {
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { Loading, Error, ProductInfo, UserInfo } from '../../components'
+import { Loading, Error, ProductInfo, UserInfo, Stars } from '../../components'
 import { formatPrice } from '../../utils/helpers'
 import moment from 'moment'
+import { getSingleUserReview } from '../../features/review/reviewSlice'
 
 const SingleCustomerPage = () => {
   const dispatch = useDispatch()
@@ -20,9 +21,16 @@ const SingleCustomerPage = () => {
     isError: error,
   } = useSelector((store) => store.user)
 
+  const {
+    singleUserReviews,
+    isUserReviewLoading: reviewLoading,
+    isUserReviewError: reviewError,
+  } = useSelector((store) => store.review)
+
   useEffect(() => {
     dispatch(getSingleUserOrder(id))
     dispatch(getSingleUser(id))
+    dispatch(getSingleUserReview(id))
   }, [id])
 
   if (loading) {
@@ -123,6 +131,45 @@ const SingleCustomerPage = () => {
           )
         })
       )}
+      <div>
+        <h4>User Product Review</h4>
+        {reviewLoading === true || !singleUserReviews ? (
+          <Loading />
+        ) : reviewError === true ? (
+          <Error />
+        ) : singleUserReviews.length === 0 ? (
+          <h3> No Review history</h3>
+        ) : (
+          singleUserReviews.map((review, index) => {
+            const formattedDate = moment(review.createdAt).format(
+              'MMMM Do YYYY'
+            )
+            return (
+              <section key={index}>
+                <div key={review._id}>
+                  <div className="review">
+                    <Stars averageRating={review.rating} />
+                    <div className="info">
+                      <p className="date">{formattedDate}</p>
+                    </div>
+                    <h5>{review.title}</h5>
+                    <p>{review.comment}</p>
+                  </div>
+                  <hr />
+                </div>
+                <div className="wrapper-div">
+                  <ProductInfo
+                    image={review.product.image}
+                    name={review.product.name}
+                    price={review.product.price}
+                    id={review.product.id}
+                  />
+                </div>
+              </section>
+            )
+          })
+        )}
+      </div>
     </Wrapper>
   )
 }
@@ -171,6 +218,51 @@ const Wrapper = styled.section`
       grid-gap: 1rem;
       margin-top: 1rem;
     }
+  }
+
+  .star {
+    color: #ffb900;
+    font-size: 1rem;
+    margin-right: 0.25rem;
+  }
+  .group-rating {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-column-gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .overal-rate-bar {
+    background-color: var(--primary-gray);
+    border-radius: 10px;
+    max-height: 1rem;
+    width: '80%';
+  }
+  h4 {
+    font-size: 1rem;
+  }
+  .review {
+    padding: 1rem 0;
+    text-align: left;
+  }
+
+  .review .info {
+    display: flex;
+  }
+  .name {
+    font-weight: 700;
+    margin-right: 10px;
+  }
+  .date {
+    opacity: 0.5;
+  }
+
+  .btn-review {
+    font-size: 1rem;
+    color: var(--actual-white);
+    padding: 5px 10px;
+    border: none;
+    border: 15px;
+    cursor: pointer;
   }
 `
 

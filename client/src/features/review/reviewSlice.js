@@ -9,6 +9,8 @@ const initialState = {
   isError: false,
   singleReview: null,
   singleUserReviews: [],
+  isUserReviewLoading: false,
+  isUserReviewError: false,
 }
 
 export const getAllReviews = createAsyncThunk(
@@ -16,7 +18,6 @@ export const getAllReviews = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await customeFetch.get('/reviews')
-      console.log(data)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -29,7 +30,6 @@ export const getSingleReview = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const { data } = await customeFetch.get(`/reviews/${id}`)
-      console.log(data)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -42,7 +42,6 @@ export const getSingleUserReview = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const { data } = await customeFetch.get(`/reviews/user/${id}`)
-      console.log(data)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -80,7 +79,6 @@ const reviewSlice = createSlice({
         state.isLoading = false
         state.isError = false
         state.singleReview = review
-        console.log(payload)
       })
       .addCase(getSingleReview.rejected, (state, { payload }) => {
         state.isLoading = false
@@ -88,19 +86,19 @@ const reviewSlice = createSlice({
         toast.error(payload)
       })
       .addCase(getSingleUserReview.pending, (state) => {
-        state.isLoading = true
-        state.isError = false
+        state.isUserReviewLoading = true
+        state.isUserReviewError = false
       })
       .addCase(getSingleUserReview.fulfilled, (state, { payload }) => {
         const { reviews } = payload
-        state.isLoading = false
-        state.isError = false
+
+        state.isUserReviewLoading = false
+        state.isUserReviewError = false
         state.singleUserReviews = reviews
-        console.log(payload)
       })
       .addCase(getSingleUserReview.rejected, (state, { payload }) => {
-        state.isLoading = false
-        state.isError = true
+        state.isUserReviewLoading = false
+        state.isUserReviewError = true
         toast.error(payload)
       })
   },

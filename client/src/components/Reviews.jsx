@@ -72,32 +72,6 @@ const Reviews = ({ reviews, groupRating = [], averageRating, productId }) => {
               </div>
               <h5>{review.title}</h5>
               <p>{review.comment}</p>
-              {review.user._id === user?.userId && (
-                <div>
-                  <button
-                    type="button"
-                    className="btn-review edit-btn"
-                    onClick={
-                      () => console.log('edited')
-                      // dispatch(
-                      //   handleEditReview({ reviewId: review._id, reviews })
-                      // )
-                    }
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-review delete-btn"
-                    onClick={
-                      () => console.log('deleted')
-                      // dispatch(deleteReview(review._id))}
-                    }
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
             </div>
             <hr />
           </div>
