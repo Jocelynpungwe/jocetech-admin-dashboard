@@ -80,6 +80,34 @@ export const getSingleUser = createAsyncThunk(
   }
 )
 
+export const updateSingleUser = createAsyncThunk(
+  'user/updateSingleUser',
+  async (user, thunkAPI) => {
+    try {
+      const { data } = await customeFetch.patch('/user/updateUser', user)
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
+export const updateUserPassword = createAsyncThunk(
+  'user/updateUserPassword',
+  async (user, thunkAPI) => {
+    console.log(user)
+    try {
+      const { data } = await customeFetch.patch(
+        '/user/updateUserPassword',
+        user
+      )
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
 export const getSingleUserOrder = createAsyncThunk(
   'user/getSingleUserOrder',
   async (id, thunkAPI) => {
@@ -173,6 +201,37 @@ const userSlice = createSlice({
         state.singleUser = user
       })
       .addCase(getSingleUser.rejected, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = true
+        toast.error(payload)
+      })
+      .addCase(updateSingleUser.pending, (state, { payload }) => {
+        state.isLoading = true
+        state.isError = false
+      })
+      .addCase(updateSingleUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = false
+        const { user } = payload
+        state.user = user
+        addUserToLocalStorage(user)
+        toast.success(`User Profile Updated`)
+      })
+      .addCase(updateSingleUser.rejected, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = true
+        toast.error(payload)
+      })
+      .addCase(updateUserPassword.pending, (state, { payload }) => {
+        state.isLoading = true
+        state.isError = false
+      })
+      .addCase(updateUserPassword.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.isError = false
+        toast.success(`Password Changed Sucessfully!`)
+      })
+      .addCase(updateUserPassword.rejected, (state, { payload }) => {
         state.isLoading = false
         state.isError = true
         toast.error(payload)

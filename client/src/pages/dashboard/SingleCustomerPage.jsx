@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   getSingleUser,
   getSingleUserOrder,
+  updateSingleUser,
 } from '../../features/user/userSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -263,6 +264,36 @@ const Wrapper = styled.section`
     border: none;
     border: 15px;
     cursor: pointer;
+  }
+
+  display: grid;
+  align-items: center;
+  .logo {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 1.38rem;
+  }
+  .form {
+    max-width: 400px;
+    border-top: 5px solid var(--primary-chocolate);
+  }
+
+  h3 {
+    text-align: center;
+  }
+  p {
+    margin: 0;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .btn {
+    margin-top: 1rem;
+  }
+  .sort-input {
+    border-color: transparent;
+    font-size: 1rem;
+    text-transform: capitalize;
+    padding: 0.25rem 0.5rem;
   }
 `
 
