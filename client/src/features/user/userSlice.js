@@ -18,18 +18,6 @@ const initialState = {
   user: getUserFromLocalStorage(),
 }
 
-export const registerUser = createAsyncThunk(
-  'user/registerUser',
-  async (user, thunkAPI) => {
-    try {
-      const { data } = await customeFetch.post('/auth/register', user)
-      return data
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg)
-    }
-  }
-)
-
 export const loginUser = createAsyncThunk(
   'user/login',
   async (user, thunkAPI) => {
@@ -130,20 +118,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state, { payload }) => {
-        state.isLoading = true
-      })
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
-        const { user } = payload
-        state.isLoading = false
-        state.user = user
-        addUserToLocalStorage(user)
-        toast.success(`Hello There ${user.name}`)
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.isLoading = false
-        toast.error(payload)
-      })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true
       })

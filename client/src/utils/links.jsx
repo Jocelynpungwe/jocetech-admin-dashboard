@@ -1,45 +1,43 @@
-import { IoBarChartSharp } from 'react-icons/io5'
-import { MdQueryStats } from 'react-icons/md'
-import { FaWpforms } from 'react-icons/fa'
-import { ImProfile } from 'react-icons/im'
-import { FaRegRectangleList } from 'react-icons/fa6'
+import { MdDashboard, MdReviews, MdSettings } from 'react-icons/md'
+import { BiSolidBox } from 'react-icons/bi'
+import { FaCartShopping, FaUserGroup } from 'react-icons/fa6'
 
 const links = [
   {
     id: 1,
     text: 'dashboard',
     path: '/',
-    icon: <IoBarChartSharp />,
+    icon: <MdDashboard />,
   },
   {
     id: 2,
     text: 'products',
     path: 'products',
-    icon: <MdQueryStats />,
+    icon: <BiSolidBox />,
   },
   {
     id: 3,
     text: 'orders',
     path: 'orders',
-    icon: <FaWpforms />,
+    icon: <FaCartShopping />,
   },
   {
     id: 4,
     text: 'customers',
     path: 'customers',
-    icon: <ImProfile />,
+    icon: <FaUserGroup />,
   },
   {
     id: 5,
     text: 'reviews',
     path: 'reviews',
-    icon: <FaRegRectangleList />,
+    icon: <MdReviews />,
   },
   {
-    id: 5,
+    id: 6,
     text: 'settings',
     path: 'settings',
-    icon: <FaRegRectangleList />,
+    icon: <MdSettings />,
   },
 ]
 

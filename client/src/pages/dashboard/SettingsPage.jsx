@@ -111,7 +111,7 @@ const SettingsPage = () => {
 const Wrapper = styled.section`
   .form {
     max-width: 400px;
-    border-top: 5px solid var(--primary-chocolate);
+    border-top: 5px solid var(--primary-900);
   }
 
   h3 {

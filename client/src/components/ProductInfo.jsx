@@ -46,7 +46,7 @@ const Wrapper = styled.article`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: var(--primary-chocolate);
+    background: var(--primary-900);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,7 +58,7 @@ const Wrapper = styled.article`
     cursor: pointer;
     svg {
       font-size: 1.25rem;
-      color: var(--actual-black);
+      color: var(--black);
     }
   }
   .container:hover img {

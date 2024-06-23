@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FaAlignLeft, FaUserCircle, FaCaretDown } from 'react-icons/fa'
+import { FaUserCircle, FaCaretDown, FaCaretUp } from 'react-icons/fa'
+import { FiMenu } from 'react-icons/fi'
 import Logo from './Logo'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logoutUser, toggleSideBar } from '../features/user/userSlice'
 
 const Navbar = () => {
-  const { user } = useSelector((store) => store.user)
+  const { user, isSideBarOpen } = useSelector((store) => store.user)
   const dispatch = useDispatch()
   const [showLogout, setShowLogout] = useState(false)
 
@@ -19,13 +20,17 @@ const Navbar = () => {
           className="toggle-btn"
           onClick={() => dispatch(toggleSideBar())}
         >
-          <FaAlignLeft />
+          <FiMenu />
         </button>
         <div>
+          {isSideBarOpen && (
+            <div className="logo-nav">
+              <Logo />
+            </div>
+          )}
           <div className="logo">
             <Logo />
           </div>
-          <h3 className="logo-text">Admin</h3>
         </div>
         <div className="btn-container">
           <button
@@ -35,7 +40,7 @@ const Navbar = () => {
           >
             <FaUserCircle />
             {user.name}
-            <FaCaretDown />
+            {showLogout ? <FaCaretDown /> : <FaCaretUp />}
           </button>
           <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
             <button
@@ -51,6 +56,7 @@ const Navbar = () => {
     </Wrapper>
   )
 }
+
 const Wrapper = styled.nav`
   height: var(--nav-height);
   display: flex;
@@ -79,7 +85,7 @@ const Wrapper = styled.nav`
     background: transparent;
     border-color: transparent;
     font-size: 1.75rem;
-    color: var(--primary-blackish);
+    color: var(--black);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -102,7 +108,7 @@ const Wrapper = styled.nav`
     top: 40px;
     left: 0;
     width: 100%;
-    background: var(--secondy-chocolate);
+    background: var(--primary-500);
     box-shadow: var(--shadow-2);
     padding: 0.5rem;
     text-align: center;
@@ -120,10 +126,11 @@ const Wrapper = styled.nav`
     text-transform: capitalize;
     cursor: pointer;
   }
-  .logo-text {
+  .logo-nav {
     display: none;
     margin: 0;
   }
+
   @media (min-width: 992px) {
     position: sticky;
     top: 0;
@@ -135,7 +142,7 @@ const Wrapper = styled.nav`
     .logo {
       display: none;
     }
-    .logo-text {
+    .logo-nav {
       display: block;
     }
   }

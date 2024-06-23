@@ -442,7 +442,7 @@ const Wrapper = styled.section`
   }
 
   input[type='checkbox']:checked::before {
-    color: var(--primary-chocolate);
+    color: var(--primary-900);
   }
 
   .form-image-container {

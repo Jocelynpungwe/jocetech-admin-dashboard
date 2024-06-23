@@ -4,16 +4,49 @@ import styled from 'styled-components'
 const Logo = () => {
   return (
     <Wrapper>
-      <span>JocesTech</span> Solution
+      <div className="letter-container">
+        <span>J</span>
+      </div>
+      <div>
+        <h3>
+          <span className="info-admin">Admin</span>
+        </h3>
+        <h3>
+          <span>JocesTech</span>
+        </h3>
+      </div>
     </Wrapper>
   )
 }
 
-const Wrapper = styled.h3`
-  margin-bottom: 0;
-  color: var(--primary-blackish);
-  span {
-    color: var(--primary-chocolate);
+const Wrapper = styled.section`
+  display: flex;
+
+  .letter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-900);
+    width: 50px;
+    height: 50px;
+    border-radius: var(--borderRadius);
+    color: var(--actual-white);
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+
+  h3 {
+    font-size: 1rem;
+    margin: 0;
+    color: var(--black);
+    span {
+      color: var(--primary-900);
+    }
+  }
+
+  .info-admin {
+    font-size: 1.5rem;
+    font-weight: 700;
   }
 `
 

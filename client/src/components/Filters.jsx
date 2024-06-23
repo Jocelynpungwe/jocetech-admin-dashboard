@@ -175,7 +175,7 @@ const Wrapper = styled.section`
     border: none;
     border-bottom: 1px solid transparent;
     letter-spacing: var(--spacing);
-    color: var(--primary-blackish);
+    color: var(--black);
     cursor: pointer;
   }
   .active {

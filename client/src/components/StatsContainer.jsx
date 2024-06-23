@@ -10,7 +10,7 @@ const StatsContainer = ({ productsStat, totalSale, orderStat }) => {
       count: formatPrice(totalSale),
       icon: <FaDollarSign />,
       color: 'var(--actual-white)',
-      bcg: 'var(--primary-chocolate)',
+      bcg: 'var(--primary-900)',
     },
     {
       title: 'total orders',

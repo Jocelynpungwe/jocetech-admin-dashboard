@@ -15,7 +15,7 @@ const Wrapper = styled.article`
   padding: 2rem;
   background: var(--white);
   border-radius: var(--borderRadius);
-  border-bottom: 5px solid var(--primary-blackish);
+  border-bottom: 5px solid var(--black);
   header {
     display: flex;
     align-items: center;
@@ -25,7 +25,7 @@ const Wrapper = styled.article`
     display: block;
     font-weight: 700;
     font-size: 40px;
-    color: var(--primary-blackish);
+    color: var(--black);
   }
   .title {
     margin: 0;

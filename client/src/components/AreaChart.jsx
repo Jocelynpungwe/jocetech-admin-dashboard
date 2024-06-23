@@ -20,8 +20,8 @@ const AreaChartComponent = ({ data }) => {
         <Area
           type="monotone"
           dataKey="count"
-          stroke="var(--primary-chocolate)"
-          fill="var(--secondy-chocolate)"
+          stroke="var(--primary-900)"
+          fill="var(--primary-500)"
         />
       </AreaChart>
     </ResponsiveContainer>

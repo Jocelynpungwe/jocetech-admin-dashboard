@@ -27,7 +27,7 @@ const PieChartComponent = ({ data }) => {
           cx="50%"
           cy="50%"
           outerRadius={80}
-          fill="var(--secondy-chocolate)"
+          fill="var(--primary-500)"
           label
           labelList
         >

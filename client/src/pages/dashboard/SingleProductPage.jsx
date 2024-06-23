@@ -201,7 +201,7 @@ const Wrapper = styled.main`
     margin-top: 2rem;
   }
   .price {
-    color: var(--secondy-chocolate);
+    color: var(--primary-500);
   }
   .desc {
     line-height: 2;
@@ -229,7 +229,7 @@ const Wrapper = styled.main`
       margin-top: 0;
       margin-bottom: 10px;
       span {
-        color: var(--primary-chocolate);
+        color: var(--primary-900);
         font-family: Manrope;
         font-size: 15px;
         font-style: normal;

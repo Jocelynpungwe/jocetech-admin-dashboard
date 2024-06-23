@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Logo, FormRow } from '../components'
-
 import { toast } from 'react-toastify'
-
-import { registerUser, loginUser } from '../features/user/userSlice'
+import { loginUser } from '../features/user/userSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -50,7 +48,9 @@ const LoginPage = () => {
   return (
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>
-        <Logo />
+        <div className="logo">
+          <Logo />
+        </div>
         <h3>Login</h3>
         <FormRow
           name="email"
@@ -74,7 +74,7 @@ const LoginPage = () => {
         >
           {isLoading ? 'loading...' : 'admin demo'}
         </button>
-        <button type="submit" className="btn btn-block primary-btn">
+        <button type="submit" className="btn btn-block ">
           {isLoading ? 'loading...' : 'submit'}
         </button>
       </form>
@@ -86,13 +86,14 @@ const Wrapper = styled.section`
   display: grid;
   align-items: center;
   .logo {
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 1.38rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
   .form {
     max-width: 400px;
-    border-top: 5px solid var(--primary-chocolate);
+    border-top: 5px solid var(--primary-900);
   }
 
   h3 {

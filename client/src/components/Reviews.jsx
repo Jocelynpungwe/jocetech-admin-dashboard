@@ -47,7 +47,7 @@ const Reviews = ({ reviews, groupRating = [], averageRating, productId }) => {
                     width: `${Math.ceil(
                       (rating.groupRating / totalGroupRating) * 100
                     )}%`,
-                    backgroundColor: 'var( --secondy-chocolate)',
+                    backgroundColor: 'var( --primary-500)',
                     height: '100%',
                     borderRadius: '10px',
                   }}
@@ -128,11 +128,11 @@ const Wrapper = styled.section`
     cursor: pointer;
   }
   .edit-btn {
-    background-color: var(--primary-chocolate);
+    background-color: var(--primary-900);
     margin-right: 1rem;
   }
   .edit-btn:hover {
-    background-color: var(--secondy-chocolate);
+    background-color: var(--primary-500);
   }
   .delete-btn {
     background-color: var(--clr-red-dark);

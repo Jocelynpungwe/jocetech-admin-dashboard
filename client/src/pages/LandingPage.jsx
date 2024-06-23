@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { Logo } from '../components'
 import main from '../assets/images/main.svg'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -8,11 +6,7 @@ import styled from 'styled-components'
 const LandingPage = () => {
   return (
     <Wrapper>
-      {/* <nav>
-        <Logo />
-      </nav> */}
       <div className="container page">
-        {/* info */}
         <div className="info">
           <h1>
             JocesTech <span>Solution</span> Admin
@@ -36,14 +30,6 @@ const LandingPage = () => {
 }
 
 const Wrapper = styled.main`
-  nav {
-    width: var(--fluid-width);
-    max-width: var(--max-width);
-    margin: 0 auto;
-    height: var(--nav-height);
-    display: flex;
-    align-items: center;
-  }
   .page {
     min-height: calc(100vh - var(--nav-height));
     display: grid;
@@ -52,19 +38,19 @@ const Wrapper = styled.main`
   }
   h1 {
     font-weight: 700;
-    color: var(--primary-chocolate);
+    color: var(--primary-900);
     span {
-      color: var(--primary-blackish);
+      color: var(--black);
     }
   }
   p {
-    color: var(--primary-blackish);
+    color: var(--black);
     opacity: 0.6;
   }
   .main-img {
     display: none;
   }
-  @media (min-width: 992px) {
+  @media (min-width: var(--breakpoint-lg)) {
     .page {
       grid-template-columns: 1fr 1fr;
       column-gap: 3rem;

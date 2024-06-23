@@ -57,7 +57,6 @@ const uploadImage = async (req, res) => {
 
   const productImage = req.files.images
 
-  console.log(productImage)
   if (!productImage.mimetype.startsWith('image')) {
     throw new BadRequestError('Please Upload Image')
   }
