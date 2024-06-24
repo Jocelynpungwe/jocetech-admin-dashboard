@@ -8,59 +8,71 @@ const OrdersInfo = ({ shippingAddress, total, status, updatedAt, id }) => {
   return (
     <Wrapper>
       <span>{moment(updatedAt).format('YYYY-MM-DD')}</span>
-      <h4>{shippingAddress?.name}</h4>
-      <h5>{shippingAddress?.email}</h5>
+      <h6>{shippingAddress?.name}</h6>
+      <h7>{shippingAddress?.email}</h7>
       <span>{formatPrice(total)}</span>
       <span
         className="status"
         style={{
-          textTransform: 'uppercase',
-          fontWeight: '700',
           color:
             status === 'paid'
               ? 'var(--green-dark)'
               : status === 'pending'
               ? 'var(--primary-900)'
+              : status === 'failed'
+              ? 'var(--red-light)'
+              : status === 'delivered'
+              ? 'var(--green-light)'
+              : status === 'canceled'
+              ? 'red'
               : 'red',
         }}
       >
         {status}
       </span>
-
-      <Link to={`/orders/${id}`} className="primary-btn">
+      <Link to={`/orders/${id}`} className=" primary-btn">
         View Order
       </Link>
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div`
-  border-bottom: 1px gray solid;
-  padding: 1rem;
+const Wrapper = styled.article`
   display: flex;
   flex-direction: column;
-  h4,
-  h5 {
+  border-bottom: 1px var(--grey-100) solid;
+  padding: 1rem;
+
+  h6,
+  h7 {
+    text-align: center;
     font-size: 1rem;
     margin: 5px 0;
     opacity: 0.5;
+    font-weight: 700;
+    margin-right: 0.625rem;
   }
 
-  h5 {
-    font-weight: 700;
-  }
   span {
-    opacity: 0.5;
+    text-align: center;
+    align-self: center;
   }
 
   .status {
-    opacity: 1;
+    text-transform: uppercase;
+    font-weight: 700;
+    width: 80px;
   }
 
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    h6 {
+      text-align: left;
+    }
+
     .primary-btn {
       padding: 0.5rem 1rem;
       font-size: 1rem;

@@ -12,8 +12,9 @@ const PieChartComponent = ({ data }) => {
   const COLORS = [
     'var(--green-dark)',
     'var(--primary-900)',
-    '#FFBB28',
-    '#FF8042',
+    'var(--primary-500)',
+    'var(--grey-600)',
+    'var(--red-dark)',
   ]
 
   return (
@@ -27,13 +28,17 @@ const PieChartComponent = ({ data }) => {
           cx="50%"
           cy="50%"
           outerRadius={80}
-          fill="var(--primary-500)"
+          fill="#000"
           label
           labelList
         >
-          <LabelList dataKey="_id" color="#000" />
+          <LabelList dataKey="_id" fill="#000" />
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={`cell-${index}`}
+              fill={COLORS[index % COLORS.length]}
+              color="#000"
+            />
           ))}
         </Pie>
       </PieChart>

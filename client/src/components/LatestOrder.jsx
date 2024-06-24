@@ -1,11 +1,11 @@
 import React from 'react'
-import styled from 'styled-components'
+
 import OrdersInfo from './OrdersInfo'
 
 const LatestOrder = ({ orders, page }) => {
   return (
-    <Wrapper>
-      <h4>Latest orders</h4>
+    <section className="wrapper-container">
+      <h5 className="title">Latest orders</h5>
       {page === 'order-page'
         ? orders.map((order, index) => {
             return <OrdersInfo {...order} key={index} />
@@ -13,13 +13,8 @@ const LatestOrder = ({ orders, page }) => {
         : orders.slice(0, 5).map((order, index) => {
             return <OrdersInfo {...order} key={index} />
           })}
-    </Wrapper>
+    </section>
   )
 }
-
-const Wrapper = styled.div`
-  background-color: var(--white);
-  padding: 2rem;
-`
 
 export default LatestOrder

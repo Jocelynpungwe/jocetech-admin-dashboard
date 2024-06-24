@@ -14,18 +14,18 @@ const ChartsContainer = () => {
   return (
     <Wrapper>
       <section className="primary-stats">
-        <div className="stats">
-          <h5>Most Popular Products</h5>
+        <div className="wrapper-container">
+          <h5 className="title">Most Popular Products</h5>
           <BarChart data={mustOrderStats.slice(0, 5)} />
         </div>
-        <div className="stats">
-          <h5>Order Details</h5>
+        <div className="wrapper-container">
+          <h5 className="title">Order Details</h5>
           <PieChart data={orderState} />
         </div>
       </section>
       <section className="secondary-stats">
-        <div className="stats">
-          <h5>Sales Statistics</h5>
+        <div className="wrapper-container">
+          <h5 className="title">Sales Statistics</h5>
           <AreaChart data={monthlyOrder} />
         </div>
       </section>
@@ -39,13 +39,11 @@ const Wrapper = styled.div`
   }
 
   .secondary-stats {
-    margin-bottom: 30px;
+    margin-bottom: 1.875rem;
   }
 
-  .stats {
-    background-color: var(--white);
-    margin-top: 30px;
-    padding: 2rem;
+  .wrapper-container {
+    margin-top: 1.875rem;
   }
 
   @media (min-width: 768px) {

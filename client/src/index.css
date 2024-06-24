@@ -14,7 +14,6 @@ html {
 :root {
   --primary-gray: #f1f1f1;
   --seondary-gray: #fafafa;
-  --actual-white: #fff;
 
   /* colors */
   --primary-50: #eff6ff;
@@ -143,6 +142,7 @@ a {
 }
 a,
 button {
+  text-align: center;
   cursor: pointer;
   line-height: 1.15;
 }
@@ -181,9 +181,11 @@ img {
 }
 
 .primary-btn {
+  
   padding: 1rem 2rem;
-  color: var(--actual-white);
+  color: var(--white);
   background: var(--primary-900);
+  transition: var(--transition);
 }
 
 .primary-btn:hover {
@@ -196,29 +198,32 @@ img {
   background: transparent;
   border: 1px solid #000;
   border-radius: var(--borderRadius);
+  transition: var(--transition);
 }
 .secondary-btn:hover {
-  color: var(--actual-white);
+  color: var(--white);
   background: var(--black);
 }
 
 .third-btn {
   padding: 1rem 2rem;
-  color: var(--actual-white);
+  color: var(--white);
   background: var(--black);
+  transition: var(--transition);
 }
 
 .third-btn:hover {
-  color: var(--actual-white);
+  color: var(--white);
   background: var(--black);
 }
 
 .btn-hipster {
-  color: var(--actual-white);
+  color: var(--white);
   background: var(--primary-500);
+  transition: var(--transition);
 }
 .btn-hipster:hover {
-  color: var(--actual-white);
+  color: var(--white);
   background: var(--primary-900);
 }
 .btn-block {
@@ -282,7 +287,7 @@ img {
   padding: 0.375rem 0.75rem;
   border-radius: var(--borderRadius);
   background: var(--backgroundColor);
-  border: 1px solid var(--primary-50);
+  border: 1px solid var(--grey-100);
 }
 .form-input,
 .form-select,
@@ -327,7 +332,12 @@ img {
 /* title */
 
 .title {
-  text-align: center;
+    text-align: left;
+    margin: 0;
+    text-transform: capitalize;
+    letter-spacing: var(--letterSpacing);
+    margin-top: 0.5rem;
+
 }
 
 .title-underline {
@@ -342,6 +352,12 @@ img {
   width: var(--fluid-width);
   max-width: var(--max-width);
   margin: 0 auto;
+}
+
+.wrapper-container{
+  padding: 2rem;
+  background: var(--white);
+  border-radius: var(--borderRadius);
 }
 
 .page {

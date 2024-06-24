@@ -50,7 +50,7 @@ const Wrapper = styled.main`
   .main-img {
     display: none;
   }
-  @media (min-width: var(--breakpoint-lg)) {
+  @media (min-width: 992px) {
     .page {
       grid-template-columns: 1fr 1fr;
       column-gap: 3rem;

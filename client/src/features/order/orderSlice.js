@@ -13,6 +13,9 @@ const initialBilling = {
 
 const initialState = {
   allOrders: [],
+  orderLoading: false,
+  orderError: false,
+
   singleOrder: null,
   sortAllOrders: [],
   status: 'pending',
@@ -22,8 +25,6 @@ const initialState = {
   mustOrderStats: [],
   total_sale: 0,
 
-  orderLoading: false,
-  orderError: false,
   order: {},
   clientSecret: null,
   ...initialBilling,
@@ -35,7 +36,6 @@ export const getAllOrders = createAsyncThunk(
     try {
       const { data } = await customeFetch.get('/orders')
       thunkAPI.dispatch(totalSale(data))
-      console.log(data)
       return data
     } catch (error) {
       if (error.response.status === 401) {
@@ -168,7 +168,6 @@ const orderSlice = createSlice({
         const { orders } = payload
         state.orderLoading = false
         state.orderError = false
-        console.log(orders)
         state.allOrders = orders
         state.sortAllOrders = orders
       })

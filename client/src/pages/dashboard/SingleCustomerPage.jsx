@@ -259,7 +259,7 @@ const Wrapper = styled.section`
 
   .btn-review {
     font-size: 1rem;
-    color: var(--actual-white);
+    color: var(--white);
     padding: 5px 10px;
     border: none;
     border: 15px;

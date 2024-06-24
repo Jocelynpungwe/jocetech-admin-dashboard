@@ -30,7 +30,7 @@ const Wrapper = styled.section`
     width: 50px;
     height: 50px;
     border-radius: var(--borderRadius);
-    color: var(--actual-white);
+    color: var(--white);
     font-size: 1.5rem;
     margin-right: 10px;
   }

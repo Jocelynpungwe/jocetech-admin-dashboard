@@ -40,7 +40,7 @@ const Navbar = () => {
           >
             <FaUserCircle />
             {user.name}
-            {showLogout ? <FaCaretDown /> : <FaCaretUp />}
+            {!showLogout ? <FaCaretDown /> : <FaCaretUp />}
           </button>
           <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
             <button
@@ -121,7 +121,7 @@ const Wrapper = styled.nav`
   .dropdown-btn {
     background: transparent;
     border-color: transparent;
-    color: var(--actual-white);
+    color: var(--white);
     letter-spacing: var(--letterSpacing);
     text-transform: capitalize;
     cursor: pointer;

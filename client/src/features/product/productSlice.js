@@ -6,6 +6,7 @@ const initialState = {
   products_loading: false,
   products_error: false,
   products: [],
+
   filtered_products: [],
   sort: 'price-lowest',
   filters: {
