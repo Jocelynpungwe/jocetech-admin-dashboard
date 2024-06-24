@@ -1,43 +1,32 @@
-import { useEffect } from 'react'
-import GridView from './GridView'
-import { useSelector, useDispatch } from 'react-redux'
-import Loading from './Loading'
-import Error from './Error'
-import { getAllProducts } from '../features/product/productSlice'
+import React from 'react'
+import styled from 'styled-components'
+import Product from './Product'
+import { useSelector } from 'react-redux'
 
 const ProductList = () => {
-  const dispatch = useDispatch()
-  const {
-    filtered_products: products,
-    products_loading: loading,
-    products_error: error,
-    single_product,
-  } = useSelector((store) => store.products)
-
-  useEffect(() => {
-    dispatch(getAllProducts())
-  }, [single_product])
-
-  if (loading) {
-    return <Loading />
-  }
-  if (error) {
-    return <Error />
-  }
-
-  if (products.length < 1) {
-    return (
-      <h5 style={{ textTransform: 'none' }}>
-        Sorry, no products matched your search.
-      </h5>
-    )
-  }
-
+  const { filtered_products: products } = useSelector((store) => store.products)
+  console.log(products)
   return (
-    <>
-      <GridView products={products} />
-    </>
+    <Wrapper>
+      {products.map((product) => {
+        return <Product key={product.id} {...product} />
+      })}
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.section`
+  display: grid;
+  margin-top: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+  }
+
+  @media (min-width: 990px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`
 
 export default ProductList

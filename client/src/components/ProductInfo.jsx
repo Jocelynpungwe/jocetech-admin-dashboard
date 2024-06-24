@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { formatPrice } from '../utils/helpers'
 import { FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-const ProductInfo = ({ image, name, price, id, amount, color }) => {
+const ProductInfo = ({ image, name, price, id, amount, colors }) => {
+  console.log(colors)
   return (
     <Wrapper>
       <div className="container">
@@ -16,9 +17,18 @@ const ProductInfo = ({ image, name, price, id, amount, color }) => {
         <h5>{name}</h5>
         <p>{formatPrice(price)}</p>
         {amount && <p>Amount: {amount}</p>}
-        {color && (
-          <div style={{ backgroundColor: color }} className="color-span">
-            1
+        {colors && colors.length > 0 && (
+          <div className="color-container">
+            {colors.map((color, index) => {
+              return (
+                <div key={index} className="color-container">
+                  <div
+                    style={{ backgroundColor: color }}
+                    className="color-span"
+                  ></div>
+                </div>
+              )
+            })}
           </div>
         )}
       </section>
@@ -34,10 +44,7 @@ const Wrapper = styled.article`
     width: 100%;
   }
   img {
-    width: 100%;
     height: 200px;
-    display: block;
-    object-fit: cover;
     border-radius: var(--radius);
     transition: var(--transition);
   }
@@ -70,10 +77,12 @@ const Wrapper = styled.article`
 
   h5,
   p {
+    text-align: center;
     opacity: 0.5;
   }
 
   h5 {
+    font-size: 1rem;
     margin: 5px 0;
   }
 
@@ -81,10 +90,17 @@ const Wrapper = styled.article`
     margin: 0 0 5px 0;
   }
 
+  .color-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .color-span {
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
+    border: 2px solid var(--grey-50);
   }
 `
 

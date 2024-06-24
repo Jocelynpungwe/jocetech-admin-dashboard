@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-
 import { useNavigate } from 'react-router-dom'
 import {
   getSingleProduct,
@@ -11,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import ProductInfo from './ProductInfo'
 import EditAndDelete from './EditAndDelete'
 
-const Product = ({ image, name, price, id }) => {
+const Product = ({ image, name, price, id, colors }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -23,7 +22,13 @@ const Product = ({ image, name, price, id }) => {
 
   return (
     <Wrapper>
-      <ProductInfo image={image} name={name} id={id} price={price} />
+      <ProductInfo
+        image={image}
+        name={name}
+        id={id}
+        price={price}
+        colors={colors}
+      />
       <EditAndDelete
         handleClickEdit={handleClick}
         handleClickDelete={() => dispatch(deleteProduct(id))}
@@ -33,7 +38,7 @@ const Product = ({ image, name, price, id }) => {
 }
 
 const Wrapper = styled.article`
-  box-shadow: var(--shadow-4);
+  box-shadow: var(--shadow-3);
   border-radius: var(--radius);
   padding: 1rem;
 `

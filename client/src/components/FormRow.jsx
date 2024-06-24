@@ -1,6 +1,15 @@
 import React from 'react'
 
-const FormRow = ({ type, name, value, handleChange, labelText }) => {
+const FormRow = ({
+  type,
+  name,
+  value,
+  handleChange,
+  labelText,
+  placeholder,
+  required,
+  inputMode,
+}) => {
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
@@ -12,6 +21,9 @@ const FormRow = ({ type, name, value, handleChange, labelText }) => {
           type={type}
           value={value}
           name={name}
+          inputMode={inputMode && inputMode}
+          placeholder={placeholder && 'Type here'}
+          required={required ? true : false}
           onChange={handleChange}
           className="form-input"
         />

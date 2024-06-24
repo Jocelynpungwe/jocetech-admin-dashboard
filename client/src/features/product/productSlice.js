@@ -2,18 +2,7 @@ import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import customeFetch from '../../utils/customeFetch'
 import { toast } from 'react-toastify'
 
-const initialState = {
-  products_loading: false,
-  products_error: false,
-  products: [],
-
-  filtered_products: [],
-  sort: 'price-lowest',
-  filters: {
-    text: '',
-    company: 'all',
-    category: 'all',
-  },
+const initialProduct = {
   new_products: {
     name: '',
     price: 0,
@@ -37,6 +26,26 @@ const initialState = {
     ],
     valueBox: '',
   },
+}
+
+const initialState = {
+  products_loading: false,
+  products_error: false,
+  products: [],
+  filtered_products: [],
+  sort: 'price-lowest',
+  sortOptions: [
+    { value: 'price-lowest', label: 'price (lowest)' },
+    { value: 'price-highest', label: 'price (highest)' },
+    { value: 'name-a', label: 'name (a - z)' },
+    { value: 'name-z', label: 'name (z - a)' },
+  ],
+  filters: {
+    text: '',
+    company: 'all',
+    category: 'all',
+  },
+  ...initialProduct,
   isEdit: false,
   editId: '',
   uploadLoading: false,
@@ -277,7 +286,7 @@ const productSlice = createSlice({
         state.products_error = false
         const { products } = payload
         state.products = products
-        state.filtered_products = products
+        state.filtered_products = products.sort((a, b) => a.price - b.price)
       })
       .addCase(getAllProducts.rejected, (state, { payload }) => {
         state.products_loading = false

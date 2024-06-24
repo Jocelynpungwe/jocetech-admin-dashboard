@@ -14,11 +14,10 @@ import PieChart from './PieChart'
 import LatestOrder from './LatestOrder'
 import OrdersInfo from './OrdersInfo'
 import ProductList from './ProductList'
-import GridView from './GridView'
 import Product from './Product'
 import Error from './Error'
 import Filters from './Filters'
-import AddItems from './AddItems'
+import PageTitle from './PageTitle'
 import ProductImages from './ProductImages'
 import Stars from './Stars'
 import Reviews from './Reviews'
@@ -27,6 +26,7 @@ import ProductInfo from './ProductInfo'
 import EditAndDelete from './EditAndDelete'
 import OrderOptions from './OrderOptions'
 import UserInfo from './UserInfo'
+import FormSelect from './FormSelect'
 
 export {
   BigSidebar,
@@ -45,11 +45,10 @@ export {
   LatestOrder,
   OrdersInfo,
   ProductList,
-  GridView,
   Product,
   Error,
   Filters,
-  AddItems,
+  PageTitle,
   ProductImages,
   Stars,
   Reviews,
@@ -58,4 +57,5 @@ export {
   EditAndDelete,
   OrderOptions,
   UserInfo,
+  FormSelect,
 }

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import { getUniqueValues } from '../utils/helpers'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import { FormRow, PageTitle } from '../../components'
 import {
   createProduct,
   updateProduct,
-  deleteProduct,
   handleChange,
   handleClick,
   uploadImage,
@@ -12,23 +13,16 @@ import {
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 const AddProductPage = () => {
-  const { new_products, isEdit } = useSelector((store) => store.products)
+  const { new_products, products, isEdit } = useSelector(
+    (store) => store.products
+  )
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   console.log(new_products)
   console.log(isEdit)
-  const catergoryOptions = [
-    'none',
-    'phones',
-    'laptops',
-    'game consoles',
-    'headphones',
-    'computers',
-    'speakers',
-  ]
-
-  const companyOptions = ['none', 'apple', 'dell', 'hp', 'sony', 'microsoft']
+  const catergoryOptions = getUniqueValues(products, 'category')
+  const companyOptions = getUniqueValues(products, 'company')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -66,17 +60,22 @@ const AddProductPage = () => {
 
   return (
     <Wrapper>
-      <h3>Create Product</h3>
+      <PageTitle
+        name="Create Product"
+        label="Back To Product"
+        linkName="products"
+        page="add-product-page"
+      />
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Product Name</label>
-          <input
-            type="text"
-            placeholder="Type here"
-            id="name"
+          <FormRow
             name="name"
             value={new_products.name}
-            onChange={(e) =>
+            labelText="Product Name"
+            type="text"
+            placeholder="Type here"
+            required
+            handleChange={(e) =>
               dispatch(
                 handleChange({
                   name: e.target.name,
@@ -85,20 +84,19 @@ const AddProductPage = () => {
                 })
               )
             }
-            required
           />
         </div>
         <div className="form-price-container">
           <div>
-            <label htmlFor="price">Price (CAD)</label>
-            <input
-              type="text"
-              placeholder="Type Here"
-              inputMode="numeric"
-              id="price"
+            <FormRow
               name="price"
               value={new_products.price}
-              onChange={(e) =>
+              labelText="Price (CAD)"
+              type="text"
+              placeholder="Type here"
+              inputMode="numeric"
+              required
+              handleChange={(e) =>
                 dispatch(
                   handleChange({
                     name: e.target.name,
@@ -107,8 +105,6 @@ const AddProductPage = () => {
                   })
                 )
               }
-              className="number-input"
-              required
             />
           </div>
           <div>
@@ -156,12 +152,11 @@ const AddProductPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
+          <FormSelect
             name="category"
-            className="company"
-            onChange={(e) =>
+            lebelText="category"
+            value={new_products.category}
+            handleChange={(e) =>
               dispatch(
                 handleChange({
                   name: e.target.name,
@@ -170,25 +165,16 @@ const AddProductPage = () => {
                 })
               )
             }
-            value={new_products.category}
+            arrayOptions={catergoryOptions}
             required
-          >
-            {catergoryOptions.map((category) => {
-              return (
-                <option value={category} key={category}>
-                  {category}
-                </option>
-              )
-            })}
-          </select>
+          />
         </div>
         <div>
-          <label htmlFor="company">Company</label>
-          <select
-            id="company"
+          <FormSelect
             name="company"
+            lebelText="company"
             value={new_products.company}
-            onChange={(e) =>
+            handleChange={(e) =>
               dispatch(
                 handleChange({
                   name: e.target.name,
@@ -197,17 +183,9 @@ const AddProductPage = () => {
                 })
               )
             }
-            className="company"
+            arrayOptions={companyOptions}
             required
-          >
-            {companyOptions.map((company) => {
-              return (
-                <option value={company} key={company}>
-                  {company}
-                </option>
-              )
-            })}
-          </select>
+          />
         </div>
 
         <div className="form-color-container">

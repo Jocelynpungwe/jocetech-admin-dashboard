@@ -1,31 +1,57 @@
-import React from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
-import { ProductList, Filters, AddItems } from '../../components'
-import { clearNewProduct } from '../../features/product/productSlice'
+import {
+  ProductList,
+  Filters,
+  PageTitle,
+  Loading,
+  Error,
+} from '../../components'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllProducts } from '../../features/product/productSlice'
 
 const ProductsPage = () => {
+  const dispatch = useDispatch()
+  const {
+    filtered_products: products,
+    products_loading: loading,
+    products_error: error,
+  } = useSelector((store) => store.products)
+
+  useEffect(() => {
+    dispatch(getAllProducts())
+  }, [])
+
+  if (loading) {
+    return <Loading />
+  }
+  if (error) {
+    return <Error />
+  }
+
   return (
     <Wrapper>
-      <AddItems
+      <PageTitle
         name="All Products"
         label="Add Product"
         linkName="new-product"
-        clear={clearNewProduct}
+        page="product-page"
       />
-      <div className="container">
+      <div className="wrapper-container">
         <Filters />
-        <ProductList />
+        {products.length < 1 ? (
+          <h5 style={{ textTransform: 'none', marginTop: '1rem' }}>
+            Sorry, no products matched your search.
+          </h5>
+        ) : (
+          <ProductList />
+        )}
       </div>
       {/* ADD PAGINATION */}
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div`
-  .container {
-    background-color: var(--white);
-    padding: 1.5rem;
-  }
-`
+const Wrapper = styled.div``
 
 export default ProductsPage
