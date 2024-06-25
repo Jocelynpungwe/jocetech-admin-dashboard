@@ -22,7 +22,7 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 
 const AddProductPage = () => {
-  const { new_products, products, isEdit, editId } = useSelector(
+  const { new_products, products, isEdit, editId, isLoading } = useSelector(
     (store) => store.products
   )
   const dispatch = useDispatch()
@@ -283,7 +283,9 @@ const AddProductPage = () => {
             }
           />
         </div>
-        <button className="btn btn-block ">Add Product</button>
+        <button className="btn btn-block" disabled={isLoading}>
+          {isLoading ? 'loading...' : 'Add Product'}
+        </button>
       </form>
     </Wrapper>
   )

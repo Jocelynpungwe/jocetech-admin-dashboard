@@ -231,13 +231,13 @@ img {
 }
 
 .btn-danger {
-  background: var(--red-light);
-  color: var(--red-dark);
+  background: var(--red-dark);
+  color: var(--red-light);
   border-color: var(--red-dark);
 }
 .btn-danger:hover {
-  background: var(--red-dark);
-  color: var(--white);
+  background: var(--red-light);
+  color: var(--red-dark);
 }
 /* alerts */
 .alert {

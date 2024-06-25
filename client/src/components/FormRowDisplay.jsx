@@ -2,7 +2,9 @@ import { useRef } from 'react'
 import styled from 'styled-components'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { handleRemove } from '../features/product/productSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import Loading from './Loading'
+import Error from './Error'
 
 const FormRowDisplay = ({
   type,

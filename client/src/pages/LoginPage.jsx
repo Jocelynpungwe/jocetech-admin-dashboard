@@ -74,7 +74,7 @@ const LoginPage = () => {
         >
           {isLoading ? 'loading...' : 'admin demo'}
         </button>
-        <button type="submit" className="btn btn-block ">
+        <button type="submit" className="btn btn-block" disabled={isLoading}>
           {isLoading ? 'loading...' : 'submit'}
         </button>
       </form>

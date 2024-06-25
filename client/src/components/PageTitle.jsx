@@ -6,12 +6,11 @@ import { toggleEdit, clearNewProduct } from '../features/product/productSlice'
 
 const AddItems = ({ name, label, linkName, page }) => {
   const dispatch = useDispatch()
-  const { isEdit } = useSelector((store) => store.products)
 
   return (
     <Wrapper>
       <div className="info wrapper-container">
-        <h3>{name}</h3>
+        <h3 className="title">{name}</h3>
         {page === 'product-page' ? (
           <Link
             onClick={() => {

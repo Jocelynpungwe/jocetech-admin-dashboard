@@ -36,7 +36,7 @@ const ReviewsPage = () => {
     <Wrapper>
       <h3>View All Reviews</h3>
       {allReviews.map((review, index) => {
-        const formattedDate = moment(review.createdAt).format('MMMM Do YYYY')
+        const formattedDate = moment(review.createdAt).format('Do MMMM YYYY')
         return (
           <section key={index}>
             <div>

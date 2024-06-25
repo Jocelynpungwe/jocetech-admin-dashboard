@@ -29,6 +29,9 @@ import UserInfo from './UserInfo'
 import FormSelect from './FormSelect'
 import FormTextArea from './FormTextArea'
 import FormRowDisplay from './FormRowDisplay'
+import ReviewInfo from './ReviewInfo'
+import Pagination from './Pagination'
+
 export {
   BigSidebar,
   Navbar,
@@ -61,4 +64,5 @@ export {
   FormSelect,
   FormTextArea,
   FormRowDisplay,
+  ReviewInfo,
 }

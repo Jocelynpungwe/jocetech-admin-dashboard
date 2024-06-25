@@ -1,22 +1,14 @@
 import { useState, useEffect } from 'react'
 import { BsStarFill } from 'react-icons/bs'
-import Stars from './Stars'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
-// import Pagination from './Pagination'
-
-// import {
-//   deleteReview,
-//   handleEditReview,
-//   updateReview,
-// } from '../features/review/reviewSlice'
+import ReviewInfo from './ReviewInfo'
+import Pagination from './Pagination'
 
 const Reviews = ({ reviews, groupRating = [], averageRating, productId }) => {
   const [totalGroupRating, setTotalGroupRating] = useState(0)
-  const { user } = useSelector((store) => store.user)
   const { numOfPages } = useSelector((store) => store.products)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (groupRating.length > 0)
@@ -29,13 +21,13 @@ const Reviews = ({ reviews, groupRating = [], averageRating, productId }) => {
 
   return (
     <Wrapper>
-      <h6>
+      <h3 className="title" style={{ marginBottom: '0.9rem' }}>
         {averageRating}{' '}
         <span className="star">
           <BsStarFill />
         </span>{' '}
         overall rating
-      </h6>
+      </h3>
       {groupRating.length > 0 &&
         groupRating.map((rating) => {
           return (
@@ -60,24 +52,20 @@ const Reviews = ({ reviews, groupRating = [], averageRating, productId }) => {
           )
         })}
       {reviews.map((review) => {
-        const formattedDate = moment(review.createdAt).format('MMMM Do YYYY')
+        const formattedDate = moment(review.createdAt).format('Do MMMM YYYY')
         return (
           <div key={review._id}>
-            <hr />
-            <div className="review">
-              <Stars averageRating={review.rating} />
-              <div className="info">
-                <p className="name">{review.user.name}</p>
-                <p className="date">{formattedDate}</p>
-              </div>
-              <h5>{review.title}</h5>
-              <p>{review.comment}</p>
-            </div>
-            <hr />
+            <ReviewInfo
+              rating={review.rating}
+              name={review.user.name}
+              date={formattedDate}
+              title={review.title}
+              comment={review.comment}
+            />
           </div>
         )
       })}
-      {/* {numOfPages > 1 && <Pagination />} */}
+      {numOfPages > 1 && <Pagination />}
     </Wrapper>
   )
 }
@@ -102,43 +90,6 @@ const Wrapper = styled.section`
   }
   h4 {
     font-size: 1rem;
-  }
-  .review {
-    padding: 1rem 0;
-    text-align: left;
-  }
-
-  .review .info {
-    display: flex;
-  }
-  .name {
-    font-weight: 700;
-    margin-right: 10px;
-  }
-  .date {
-    opacity: 0.5;
-  }
-
-  .btn-review {
-    font-size: 1rem;
-    color: var(--white);
-    padding: 5px 10px;
-    border: none;
-    border: 15px;
-    cursor: pointer;
-  }
-  .edit-btn {
-    background-color: var(--primary-900);
-    margin-right: 1rem;
-  }
-  .edit-btn:hover {
-    background-color: var(--primary-500);
-  }
-  .delete-btn {
-    background-color: var(--clr-red-dark);
-  }
-  .delete-btn {
-    background-color: var(--clr-red-light);
   }
 `
 

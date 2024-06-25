@@ -48,9 +48,8 @@ const initialState = {
   ...initialProduct,
   isEdit: false,
   editId: '',
+  isLoading: false,
 
-  uploadLoading: false,
-  uploadError: false,
   single_product_loading: false,
   single_product_error: false,
   single_product: [],
@@ -107,7 +106,10 @@ export const getSingleProductReview = createAsyncThunk(
   'product/getSingleProductReview',
   async (id, thunkAPI) => {
     try {
-      const { data } = await customeFetch.get(`/products/review/${id}?page=1`)
+      const { page } = thunkAPI.getState().products
+      const { data } = await customeFetch.get(
+        `/products/review/${id}?page=${page}`
+      )
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -235,6 +237,9 @@ const productSlice = createSlice({
       state.new_products.features = initialState.new_products.features
       state.new_products.box = initialState.new_products.box
     },
+    changePage: (state, { payload }) => {
+      state.page = payload
+    },
     sortProduct: (state) => {
       const { sort, filtered_products } = state
       let tempProducts = []
@@ -314,19 +319,16 @@ const productSlice = createSlice({
         toast.error(payload)
       })
       .addCase(uploadImage.pending, (state, { payload }) => {
-        state.uploadLoading = true
-        state.uploadError = false
+        state.isLoading = true
       })
       .addCase(uploadImage.fulfilled, (state, { payload }) => {
         const { image } = payload
-        state.uploadLoading = false
-        state.uploadError = false
+        state.isLoading = false
         let tempImageArray = [...state.new_products.image, image]
         state.new_products.image = tempImageArray
       })
       .addCase(uploadImage.rejected, (state, { payload }) => {
-        state.uploadLoading = false
-        state.uploadError = true
+        state.isLoading = false
         toast.error(payload)
       })
       .addCase(getSingleProduct.pending, (state) => {
@@ -337,7 +339,6 @@ const productSlice = createSlice({
         state.single_product_loading = false
         state.single_product_error = false
         const { product } = payload
-
         state.single_product = product
         state.page = 1
         state.new_products.name = product.name
@@ -375,51 +376,42 @@ const productSlice = createSlice({
         toast.error(payload)
       })
       .addCase(createProduct.pending, (state) => {
-        state.single_product_loading = true
-        state.single_product_error = false
+        state.isLoading = true
       })
       .addCase(createProduct.fulfilled, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = false
+        state.isLoading = false
         const { product } = payload
         state.single_product = product
         toast.success('New Product Created')
       })
       .addCase(createProduct.rejected, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = true
+        state.isLoading = false
         toast.error(payload)
       })
       .addCase(updateProduct.pending, (state) => {
-        state.single_product_loading = true
-        state.single_product_error = false
+        state.isLoading = true
       })
       .addCase(updateProduct.fulfilled, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = false
+        state.isLoading = false
         const { product } = payload
         state.single_product = product
         toast.success('Product Edited Successfully')
       })
       .addCase(updateProduct.rejected, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = true
+        state.isLoading = false
         toast.error(payload)
       })
       .addCase(deleteProduct.pending, (state) => {
-        state.single_product_loading = true
-        state.single_product_error = false
+        state.isLoading = true
       })
       .addCase(deleteProduct.fulfilled, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = false
+        state.isLoading = false
         const { msg } = payload
         state.single_product = []
         toast.success(msg)
       })
       .addCase(deleteProduct.rejected, (state, { payload }) => {
-        state.single_product_loading = false
-        state.single_product_error = true
+        state.isLoading = false
         toast.error(payload)
       })
   },
@@ -436,5 +428,6 @@ export const {
   updateSort,
   clearFilters,
   handleRemove,
+  changePage,
 } = productSlice.actions
 export default productSlice.reducer

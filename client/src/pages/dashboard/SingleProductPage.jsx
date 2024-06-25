@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getSingleProduct,
@@ -7,10 +7,17 @@ import {
 
 import { useParams } from 'react-router-dom'
 import { formatPrice } from '../../utils/helpers'
-import { Loading, Error, ProductImages, Stars, Reviews } from '../../components'
+import {
+  Loading,
+  Error,
+  ProductImages,
+  Stars,
+  Reviews,
+  PageTitle,
+} from '../../components'
 
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 const SingleProductPage = () => {
   const { id } = useParams()
@@ -25,16 +32,15 @@ const SingleProductPage = () => {
     single_product_review_error: singleReviewError,
     page,
   } = useSelector((store) => store.products)
-  const { newReview } = useSelector((store) => store.review)
 
   useEffect(() => {
     dispatch(getSingleProduct(id))
     window.scrollTo(0, 0)
-  }, [id, newReview])
+  }, [id])
 
   useEffect(() => {
     dispatch(getSingleProductReview(id))
-  }, [id, page, newReview])
+  }, [id, page])
 
   if (loading) {
     return <Loading />
@@ -64,148 +70,130 @@ const SingleProductPage = () => {
     createdAt,
   } = product
 
-  //   const newColor = [...colors]
-  //   console.log(newColor)
+  console.log(colors)
 
   return (
-    <Wrapper>
-      <div className="section section-center page">
-        <Link to="/products" className="btn">
-          back to products
-        </Link>
-        <div className="product-center">
-          <ProductImages image={image} />
-          <section className="content">
-            <h2>{name}</h2>
-            <Stars
-              averageRating={averageRating}
-              reviews={numOfReviews}
-              showReview={true}
-            />
-            <h5 className="price">{formatPrice(price)}</h5>
-            <p className="desc">{description}</p>
-            <p className="info">
-              <span>SKU :</span>
-              {sku}
-            </p>
-            <p className="info">
-              <span>Created :</span>
-              {createdAt}
-            </p>
-            <p className="info">
-              <span>Available : </span>
-              {inventory > 0 ? 'In stock' : 'out of stock'}
-            </p>
-            <p className="info">
-              <span>Inventory :</span>
-              {inventory}
-            </p>
-            <p className="info">
-              <span>Company :</span>
-              {company}
-            </p>
-            <p className="info">
-              <span>Category :</span>
-              {category}
-            </p>
-            <div className="colors">
+    <>
+      <PageTitle
+        name="Single Products"
+        label="Back To Products"
+        linkName="products"
+      />
+      <Wrapper>
+        <section className="wrapper-container">
+          <div className="product-center">
+            <ProductImages image={image} />
+            <section className="content">
+              <h2 className="title">{name}</h2>
+              <Stars
+                averageRating={averageRating}
+                reviews={numOfReviews}
+                showReview={true}
+              />
+              <h3 className="price">{formatPrice(price)}</h3>
+              <p className="desc">{description}</p>
               <p className="info">
-                <span>colors :</span>
+                <span>SKU :</span>
+                {sku}
               </p>
-              {/* <div>
-                {newColor.length > 0 &&
-                  newColor.map((color, index) => {
-                    return <div key={index} style={{ background: color }}></div>
-                  })}
-              </div> */}
-            </div>
-            <p className="info">
-              <span>Free Shipping :</span>
-              {freeShipping ? 'Yes' : 'No'}
-            </p>
-            <p className="info">
-              <span>Featured :</span>
-              {featured ? 'Yes' : 'No'}
-            </p>
-          </section>
-        </div>
-        <div className="feature-and-inbox-container">
+              <p className="info">
+                <span>Created :</span>
+                {moment(createdAt).format('Do MMMM YYYY')}
+              </p>
+              <p className="info">
+                <span>Available : </span>
+                {inventory > 0 ? 'In stock' : 'out of stock'}
+              </p>
+              <p className="info">
+                <span>Inventory :</span>
+                {inventory}
+              </p>
+              <p className="info">
+                <span>Company :</span>
+                {company}
+              </p>
+              <p className="info">
+                <span>Category :</span>
+                {category}
+              </p>
+              <div className="colors">
+                <p className="info">
+                  <span>colors :</span>
+                </p>
+                <div className="color-container">
+                  {colors &&
+                    colors.length > 0 &&
+                    colors.map((color, index) => {
+                      return (
+                        <div
+                          className="color-span"
+                          key={index}
+                          style={{ background: color }}
+                        ></div>
+                      )
+                    })}
+                </div>
+              </div>
+              <p className="info">
+                <span>Free Shipping :</span>
+                {freeShipping ? 'Yes' : 'No'}
+              </p>
+              <p className="info">
+                <span>Featured :</span>
+                {featured ? 'Yes' : 'No'}
+              </p>
+            </section>
+          </div>
           <div>
-            <h6>FEATURES</h6>
-            <p className="feature-desc">{features}</p>
+            <div className="feature-and-inbox-container">
+              <div>
+                <h3 className="title">Feature</h3>
+                <p className="desc">{features}</p>
+              </div>
+              <div className="inbox-container">
+                <h3 className="title">In The Box</h3>
+                {box &&
+                  box.map((c) => {
+                    return (
+                      <p>
+                        <span key={c}>{c.substring(0, 3)}</span>
+                        {c.substring(3)}
+                      </p>
+                    )
+                  })}
+              </div>
+            </div>
+            {singleReviewLoading ? (
+              <Loading />
+            ) : singleReviewError ? (
+              <Error />
+            ) : (
+              <>
+                <h3 className="title">Reviews</h3>
+                <Reviews
+                  reviews={singleProductReview}
+                  groupRating={groupRating}
+                  averageRating={averageRating}
+                  productId={id}
+                />
+              </>
+            )}
           </div>
-          <div className="inbox-container">
-            <h6>in the box</h6>
-            {box &&
-              box.map((c) => {
-                return (
-                  <p>
-                    <span key={c}>{c.substring(0, 3)}</span>
-                    {c.substring(3)}
-                  </p>
-                )
-              })}
-          </div>
-        </div>
-        {singleReviewLoading ? (
-          <Loading />
-        ) : singleReviewError ? (
-          <Error />
-        ) : (
-          <>
-            <h6>Reviews</h6>
-            <Reviews
-              reviews={singleProductReview}
-              groupRating={groupRating}
-              averageRating={averageRating}
-              productId={id}
-            />
-          </>
-        )}
-      </div>
-    </Wrapper>
+        </section>
+      </Wrapper>
+    </>
   )
 }
 
 const Wrapper = styled.main`
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 250px;
-  }
-  .feature-desc {
-    color: #000;
-    font-family: Manrope;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 25px; /* 166.667% */
-    opacity: 0.5;
-  }
-
-  h6 {
-    color: #000;
-    font-family: Manrope;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 36px; /* 150% */
-    letter-spacing: 0.857px;
-    text-transform: uppercase;
-    margin: 20px 0;
-  }
-
-  .product-center {
-    display: grid;
-    gap: 4rem;
-    margin-top: 2rem;
-  }
   .price {
-    color: var(--primary-500);
+    color: var(--primary-900);
+    font-size: 1.25rem;
   }
   .desc {
     line-height: 2;
     max-width: 45em;
+    margin-bottom: 0.5rem;
   }
   .info {
     text-transform: capitalize;
@@ -217,12 +205,19 @@ const Wrapper = styled.main`
     }
   }
 
+  p {
+    margin: 0;
+  }
+
+  .product-center {
+    display: grid;
+    gap: 4rem;
+    margin-top: 2rem;
+  }
+
   .inbox-container {
     p {
-      color: #000;
-      font-family: Manrope;
       font-size: 15px;
-      font-style: normal;
       font-weight: 500;
       line-height: 25px; /* 166.667% */
       opacity: 0.5;
@@ -230,9 +225,7 @@ const Wrapper = styled.main`
       margin-bottom: 10px;
       span {
         color: var(--primary-900);
-        font-family: Manrope;
         font-size: 15px;
-        font-style: normal;
         font-weight: 700;
         line-height: 25px; /* 166.667% */
       }
@@ -241,6 +234,23 @@ const Wrapper = styled.main`
 
   .feature-and-inbox-container {
     margin: 50px 0;
+  }
+
+  .color-container,
+  .colors {
+    display: flex;
+  }
+
+  .color-container {
+    margin-left: -177px;
+  }
+
+  .color-span {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    margin-right: 0.4rem;
+    border: 2px solid var(--grey-100);
   }
 
   @media (min-width: 550px) {
@@ -262,9 +272,6 @@ const Wrapper = styled.main`
     .product-center {
       grid-template-columns: 1fr 1fr;
       align-items: center;
-    }
-    .price {
-      font-size: 1.25rem;
     }
   }
 `
