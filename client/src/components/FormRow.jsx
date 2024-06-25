@@ -1,41 +1,32 @@
 import React from 'react'
-
+import styled from 'styled-components'
 const FormRow = ({
   type,
   name,
   value,
+  placeholder,
   handleChange,
   labelText,
-  placeholder,
   required,
-  inputMode,
 }) => {
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
         {labelText || name}
       </label>
-      {value ? (
-        <input
-          id={name}
-          type={type}
-          value={value}
-          name={name}
-          inputMode={inputMode && inputMode}
-          placeholder={placeholder && 'Type here'}
-          required={required ? true : false}
-          onChange={handleChange}
-          className="form-input"
-        />
-      ) : (
-        <input
-          id={name}
-          type={type}
-          name={name}
-          onChange={handleChange}
-          className="form-input"
-        />
-      )}
+      <input
+        id={name}
+        type={type}
+        value={value}
+        name={name}
+        inputMode={
+          name === 'price' || name === 'inventory' ? 'numeric' : 'none'
+        }
+        placeholder={placeholder ? placeholder : ''}
+        required={required ? true : false}
+        onChange={handleChange}
+        className={type === 'checkbox' ? '' : 'form-input'}
+      />
     </div>
   )
 }

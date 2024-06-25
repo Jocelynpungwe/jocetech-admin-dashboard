@@ -47,7 +47,6 @@ const ProductsPage = () => {
           <ProductList />
         )}
       </div>
-      {/* ADD PAGINATION */}
     </Wrapper>
   )
 }

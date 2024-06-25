@@ -7,11 +7,11 @@ const initialProduct = {
     name: '',
     price: 0,
     image: [],
-    colors: ['#222', '#0000'],
+    colors: ['#222'],
     valueColor: '',
     description: '',
-    category: 'none',
-    company: 'none',
+    category: 'all',
+    company: 'all',
     freeShipping: false,
     featured: false,
     inventory: 0,
@@ -48,6 +48,7 @@ const initialState = {
   ...initialProduct,
   isEdit: false,
   editId: '',
+
   uploadLoading: false,
   uploadError: false,
   single_product_loading: false,
@@ -146,7 +147,7 @@ export const deleteProduct = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const { data } = await customeFetch.delete(`/products/${id}`)
-
+      thunkAPI.dispatch(getAllProducts())
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -196,10 +197,29 @@ const productSlice = createSlice({
       }
     },
     toggleEdit: (state, { payload }) => {
-      const { id } = payload
-      state.isEdit = !state.isEdit
+      const { id, newEdit } = payload
+      state.isEdit = newEdit
       state.editId = id
-      console.log(id)
+    },
+    handleRemove: (state, { payload }) => {
+      const { name, data } = payload
+      if (name === 'image') {
+        state.new_products.image = state.new_products.image.filter(
+          (img) => img !== data
+        )
+      }
+
+      if (name === 'valueColor') {
+        state.new_products.colors = state.new_products.colors.filter(
+          (color) => color !== data
+        )
+      }
+
+      if (name === 'valueBox') {
+        state.new_products.box = state.new_products.box.filter(
+          (color) => color !== data
+        )
+      }
     },
     clearNewProduct: (state) => {
       state.new_products.name = initialState.new_products.name
@@ -415,5 +435,6 @@ export const {
   updateFilters,
   updateSort,
   clearFilters,
+  handleRemove,
 } = productSlice.actions
 export default productSlice.reducer

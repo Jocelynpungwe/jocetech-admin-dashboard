@@ -15,10 +15,8 @@ const AddItems = ({ name, label, linkName, page }) => {
         {page === 'product-page' ? (
           <Link
             onClick={() => {
-              if (isEdit) {
-                dispatch(toggleEdit({ id: '' }))
-                dispatch(clearNewProduct())
-              }
+              dispatch(toggleEdit({ id: '', newEdit: false }))
+              dispatch(clearNewProduct())
             }}
             to={`/${linkName}`}
             className="btn primary-btn"

@@ -4,7 +4,6 @@ import { formatPrice } from '../utils/helpers'
 import { FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 const ProductInfo = ({ image, name, price, id, amount, colors }) => {
-  console.log(colors)
   return (
     <Wrapper>
       <div className="container">

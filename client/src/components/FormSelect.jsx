@@ -2,7 +2,7 @@ import React from 'react'
 
 const FormSelect = ({ name, value, handleChange, labelText, arrayOptions }) => {
   return (
-    <div>
+    <div className="form-row">
       <label htmlFor={name} className="form-label">
         {labelText || name}
       </label>

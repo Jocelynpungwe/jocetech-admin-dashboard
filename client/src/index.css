@@ -181,11 +181,11 @@ img {
 }
 
 .primary-btn {
-  
   padding: 1rem 2rem;
   color: var(--white);
   background: var(--primary-900);
   transition: var(--transition);
+  text-align: center;
 }
 
 .primary-btn:hover {
@@ -286,8 +286,8 @@ img {
   width: 100%;
   padding: 0.375rem 0.75rem;
   border-radius: var(--borderRadius);
-  background: var(--backgroundColor);
-  border: 1px solid var(--grey-100);
+  background: var(--white);
+  border: 2px solid var(--grey-400);
 }
 .form-input,
 .form-select,
@@ -300,6 +300,7 @@ img {
 
 .form-textarea {
   height: 7rem;
+  resize: none;
 }
 ::placeholder {
   font-family: inherit;

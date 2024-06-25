@@ -27,7 +27,8 @@ import EditAndDelete from './EditAndDelete'
 import OrderOptions from './OrderOptions'
 import UserInfo from './UserInfo'
 import FormSelect from './FormSelect'
-
+import FormTextArea from './FormTextArea'
+import FormRowDisplay from './FormRowDisplay'
 export {
   BigSidebar,
   Navbar,
@@ -58,4 +59,6 @@ export {
   OrderOptions,
   UserInfo,
   FormSelect,
+  FormTextArea,
+  FormRowDisplay,
 }

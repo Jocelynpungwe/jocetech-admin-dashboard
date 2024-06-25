@@ -6,16 +6,17 @@ import {
   toggleEdit,
   deleteProduct,
 } from '../features/product/productSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ProductInfo from './ProductInfo'
 import EditAndDelete from './EditAndDelete'
 
 const Product = ({ image, name, price, id, colors }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { isEdit } = useSelector((store) => store.products)
 
   const handleClick = () => {
-    dispatch(toggleEdit({ id }))
+    dispatch(toggleEdit({ id, newEdit: true }))
     navigate('/new-product')
     dispatch(getSingleProduct(id))
   }
