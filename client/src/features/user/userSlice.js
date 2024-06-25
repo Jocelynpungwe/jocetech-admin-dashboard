@@ -179,7 +179,6 @@ const userSlice = createSlice({
         state.isLoading = false
         state.isError = false
         const { user } = payload
-        console.log(user)
         state.singleUser = user
       })
       .addCase(getSingleUser.rejected, (state, { payload }) => {

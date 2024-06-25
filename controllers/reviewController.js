@@ -28,7 +28,14 @@ const createReview = async (req, res) => {
 }
 
 const getAllReviews = async (req, res) => {
+  const { page: pageNo } = req.query
+  const page = Number(pageNo) || 1
+  const limit = Number(req.params.limit) || 15
+  const skip = (page - 1) * limit
+
   const reviews = await Review.find({})
+    .skip(skip)
+    .limit(limit)
     .populate({
       path: 'product',
       select: 'name company price image',
@@ -37,7 +44,13 @@ const getAllReviews = async (req, res) => {
       path: 'user',
       select: 'name',
     })
-  res.status(StatusCodes.OK).json({ reviews, count: reviews.length })
+
+  const totalReviews = await Review.countDocuments({})
+  const numOfPages = Math.ceil(totalReviews / limit)
+
+  res
+    .status(StatusCodes.OK)
+    .json({ reviews, count: reviews.length, numOfPages })
 }
 
 const getSingleReview = async (req, res) => {

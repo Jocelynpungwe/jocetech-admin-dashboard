@@ -6,7 +6,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux'
 
 import styled from 'styled-components'
-import { Loading, Error, UserInfo, FormRow } from '../../components'
+import { UserInfo, FormRow } from '../../components'
 const initialState = {
   name: '',
   email: '',
@@ -16,7 +16,7 @@ const initialState = {
 
 const SettingsPage = () => {
   const dispatch = useDispatch()
-  const { user } = useSelector((store) => store.user)
+  const { user, isLoading } = useSelector((store) => store.user)
   const [userInfo, setUserInfo] = useState(initialState)
   const [isResetPassword, setIsResetPassword] = useState(false)
 
@@ -50,13 +50,13 @@ const SettingsPage = () => {
 
   return (
     <Wrapper>
-      <div className="customer-info">
-        <h3>Single Customer Info</h3>
+      <div className="wrapper-container customer-info">
+        <h3 className="title">Settings</h3>
         <UserInfo {...user} page="single-customers" />
-        <form className="form" onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
           {!isResetPassword ? (
             <>
-              <h3>Update User Info</h3>
+              <h5>Update User Info</h5>
               <FormRow
                 name="name"
                 value={userInfo.name}
@@ -72,7 +72,7 @@ const SettingsPage = () => {
             </>
           ) : (
             <>
-              <h3>Reset Password</h3>
+              <h5>Reset Password</h5>
               <FormRow
                 name="oldPassword"
                 labelText="Old Password"
@@ -89,19 +89,30 @@ const SettingsPage = () => {
               />
             </>
           )}
-          <button
-            type="button"
-            className="btn btn-block secondary-btn"
-            onClick={() => {
-              setUserInfo(initialState)
-              setIsResetPassword(!isResetPassword)
-            }}
-          >
-            Reset Password
-          </button>
-          <button type="submit" className="btn btn-block primary-btn">
-            Update Info
-          </button>
+          <div className="btn-container">
+            <button
+              type="button"
+              className="btn btn-block secondary-btn"
+              disabled={isLoading}
+              onClick={() => {
+                setUserInfo(initialState)
+                setIsResetPassword(!isResetPassword)
+              }}
+            >
+              {isLoading
+                ? 'loading...'
+                : isResetPassword
+                ? 'Update User'
+                : 'Reset Password'}
+            </button>
+            <button
+              type="submit"
+              className="btn btn-block"
+              disabled={isLoading}
+            >
+              {isLoading ? 'loading...' : 'Update Info'}
+            </button>
+          </div>
         </form>
       </div>
     </Wrapper>
@@ -109,21 +120,26 @@ const SettingsPage = () => {
 }
 
 const Wrapper = styled.section`
-  .form {
-    max-width: 400px;
-    border-top: 5px solid var(--primary-900);
+  form {
+    padding: 2rem;
+    background-color: var(--white);
+    align-self: center;
+    box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+      0px 2px 5px 0px rgba(50, 50, 93, 0.1),
+      0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+    border-radius: 7px;
   }
 
-  h3 {
-    text-align: center;
-  }
-  p {
-    margin: 0;
-    margin-top: 1rem;
-    text-align: center;
-  }
   .btn {
-    margin-top: 1rem;
+    margin: 1rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .btn-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 0.7rem;
+    }
   }
 `
 

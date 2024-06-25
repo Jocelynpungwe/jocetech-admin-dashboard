@@ -2,9 +2,13 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { changePage } from '../features/product/productSlice'
+import { changePageReview } from '../features/review/reviewSlice'
 
-const Pagination = () => {
-  const { numOfPages, page } = useSelector((store) => store.products)
+const Pagination = ({ pageTitle }) => {
+  const { numOfPages, page } =
+    pageTitle === 'reviews'
+      ? useSelector((store) => store.review)
+      : useSelector((store) => store.products)
   const dispatch = useDispatch()
 
   const pages = Array.from({ length: numOfPages }, (_, index) => {
@@ -15,14 +19,19 @@ const Pagination = () => {
     if (newPage > numOfPages) {
       newPage = 1
     }
-    dispatch(changePage(newPage))
+    pageTitle === 'reviews'
+      ? dispatch(changePageReview(newPage))
+      : dispatch(changePage(newPage))
   }
   const prevPage = () => {
     let newPage = page - 1
     if (newPage < 1) {
       newPage = numOfPages
     }
-    dispatch(changePage(newPage))
+
+    pageTitle === 'reviews'
+      ? dispatch(changePageReview(newPage))
+      : dispatch(changePage(newPage))
   }
 
   return (
@@ -38,7 +47,11 @@ const Pagination = () => {
               type="button"
               className={pageNumber === page ? 'pageBtn active' : 'pageBtn'}
               key={pageNumber}
-              onClick={() => dispatch(changePage(pageNumber))}
+              onClick={() => {
+                pageTitle === 'reviews'
+                  ? dispatch(changePageReview(pageNumber))
+                  : dispatch(changePage(pageNumber))
+              }}
             >
               {pageNumber}
             </button>

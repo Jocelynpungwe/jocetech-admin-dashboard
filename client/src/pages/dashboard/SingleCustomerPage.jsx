@@ -12,7 +12,6 @@ import {
   Error,
   ProductInfo,
   UserInfo,
-  Stars,
   PageTitle,
   ShippingInfo,
   BillingInfo,

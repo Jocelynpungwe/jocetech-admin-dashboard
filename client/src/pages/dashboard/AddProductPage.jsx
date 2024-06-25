@@ -28,8 +28,6 @@ const AddProductPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  console.log(new_products)
-
   const catergoryOptions = getUniqueValues(products, 'category')
   const companyOptions = getUniqueValues(products, 'company')
 

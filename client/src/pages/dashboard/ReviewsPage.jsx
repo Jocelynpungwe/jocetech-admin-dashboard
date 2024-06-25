@@ -1,7 +1,13 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllReviews } from '../../features/review/reviewSlice'
-import { Error, Loading, Stars, ProductInfo } from '../../components'
+import { filtersUpdate, getAllReviews } from '../../features/review/reviewSlice'
+import {
+  Error,
+  Loading,
+  Pagination,
+  ProductInfo,
+  ReviewInfo,
+} from '../../components'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
@@ -9,16 +15,17 @@ import moment from 'moment'
 const ReviewsPage = () => {
   const dispatch = useDispatch()
   const {
-    allReviews,
+    searchReview: allReviews,
     isLoading: loading,
     isError: error,
+    text,
+    page,
+    numOfPages,
   } = useSelector((store) => store.review)
-
-  console.log(allReviews)
 
   useEffect(() => {
     dispatch(getAllReviews())
-  }, [])
+  }, [page])
 
   if (loading) {
     return <Loading />
@@ -29,136 +36,93 @@ const ReviewsPage = () => {
   }
 
   if (allReviews.length === 0) {
-    return <h3> No Review history</h3>
+    return (
+      <div className="wrapper-container">
+        <h3>View All Reviews</h3>
+        <h5> No Review history</h5>
+      </div>
+    )
   }
 
   return (
-    <Wrapper>
-      <h3>View All Reviews</h3>
-      {allReviews.map((review, index) => {
-        const formattedDate = moment(review.createdAt).format('Do MMMM YYYY')
-        return (
-          <section key={index}>
-            <div>
-              <div className="review">
-                <Stars averageRating={review.rating} />
-                <div className="info">
-                  <p className="date">{formattedDate}</p>
-                </div>
-                <h5>{review.title}</h5>
-                <p>{review.comment}</p>
+    <>
+      <Wrapper>
+        <div className="wrapper-container">
+          <h3>View All Reviews</h3>
+          <div className="content">
+            <form>
+              <div className="form-control">
+                <input
+                  type="text"
+                  name="text"
+                  value={text}
+                  placeholder="search"
+                  onChange={(e) => dispatch(filtersUpdate(e.target.value))}
+                  className="search-input"
+                />
               </div>
-              <Link
-                to={`/customers/${review.user._id}`}
-                className="primary-btn"
-              >
-                View User
-              </Link>
-            </div>
-            <div className="wrapper-div">
-              <ProductInfo
-                image={review.product.image}
-                name={review.product.name}
-                price={review.product.price}
-                id={review.product.id}
+            </form>
+          </div>
+        </div>
+
+        {allReviews.map((review, index) => {
+          const formattedDate = moment(review.createdAt).format('Do MMMM YYYY')
+          return (
+            <section key={index} className="review-section wrapper-container">
+              <div>
+                <ProductInfo
+                  image={review.product.image}
+                  name={review.product.name}
+                  price={review.product.price}
+                  id={review.product.id}
+                />
+                <Link
+                  to={`/customers/${review.user._id}`}
+                  className="btn btn-block"
+                >
+                  View User
+                </Link>
+              </div>
+              <ReviewInfo
+                rating={review.rating}
+                name={review.user.name}
+                date={formattedDate}
+                title={review.title}
+                comment={review.comment}
               />
-            </div>
-          </section>
-        )
-      })}
-    </Wrapper>
+            </section>
+          )
+        })}
+        {numOfPages > 1 && <Pagination pageTitle="reviews" />}
+      </Wrapper>
+    </>
   )
 }
 
 const Wrapper = styled.section`
-  h5,
-  p {
-    opacity: 0.5;
-  }
-
-  h5 {
-    margin: 5px 0;
-  }
-
-  p {
-    margin: 0 0 5px 0;
-  }
-
-  .wrapper-div {
-    box-shadow: var(--shadow-4);
-    border-radius: var(--radius);
-    padding: 1rem;
-    background-color: var(--white);
-  }
-
-  .info {
-    text-transform: capitalize;
-    width: 300px;
+  .review-section {
     display: grid;
-    grid-template-columns: 125px 1fr;
-    span {
-      font-weight: 700;
-    }
+    margin: 1rem 0;
   }
 
-  .customer-info {
-    background-color: var(--white);
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  @media (min-width: 650px) {
-    .shipping-container {
-      display: grid;
+  @media (min-width: 750px) {
+    .review-section {
       grid-template-columns: 1fr 1fr;
-      grid-gap: 1rem;
-      margin-top: 1rem;
+      grid-column-gap: 1rem;
     }
   }
 
-  .star {
-    color: #ffb900;
-    font-size: 1rem;
-    margin-right: 0.25rem;
-  }
-  .group-rating {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-column-gap: 1rem;
+  .search-input {
+    padding: 0.5rem;
+    background: var(--grey-50);
+    border-radius: var(--radius);
+    border-color: transparent;
+    letter-spacing: var(--spacing);
     margin-bottom: 1rem;
   }
-  .overal-rate-bar {
-    background-color: var(--primary-gray);
-    border-radius: 10px;
-    max-height: 1rem;
-    width: '80%';
-  }
-  h4 {
-    font-size: 1rem;
-  }
-  .review {
-    padding: 1rem 0;
-    text-align: left;
-  }
 
-  .review .info {
-    display: flex;
-  }
-  .name {
-    font-weight: 700;
-    margin-right: 10px;
-  }
-  .date {
-    opacity: 0.5;
-  }
-
-  .btn-review {
-    font-size: 1rem;
-    color: var(--white);
-    padding: 5px 10px;
-    border: none;
-    border: 15px;
-    cursor: pointer;
+  .search-input::placeholder {
+    text-transform: capitalize;
   }
 `
 

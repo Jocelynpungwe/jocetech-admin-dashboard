@@ -11,13 +11,18 @@ const initialState = {
   singleUserReviews: [],
   isUserReviewLoading: false,
   isUserReviewError: false,
+  text: '',
+  searchReview: [],
+  page: 1,
+  numOfPages: 1,
 }
 
 export const getAllReviews = createAsyncThunk(
   'review/getAllReviews',
   async (_, thunkAPI) => {
     try {
-      const { data } = await customeFetch.get('/reviews')
+      const { page } = thunkAPI.getState().review
+      const { data } = await customeFetch.get(`/reviews?${page}`)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -52,7 +57,18 @@ export const getSingleUserReview = createAsyncThunk(
 const reviewSlice = createSlice({
   name: 'review',
   initialState,
-  reducers: {},
+  reducers: {
+    filtersUpdate: (state, { payload }) => {
+      state.text = payload
+      state.searchReview = state.allReviews.filter((review) =>
+        review.product.name.toLowerCase().startsWith(state.text)
+      )
+    },
+    changePageReview: (state, { payload }) => {
+      console.log(payload)
+      state.page = payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllReviews.pending, (state) => {
@@ -60,10 +76,12 @@ const reviewSlice = createSlice({
         state.isError = false
       })
       .addCase(getAllReviews.fulfilled, (state, { payload }) => {
-        const { reviews } = payload
+        const { reviews, numOfPages } = payload
         state.isLoading = false
         state.isError = false
         state.allReviews = reviews
+        state.searchReview = reviews
+        state.numOfPages = numOfPages
       })
       .addCase(getAllReviews.rejected, (state, { payload }) => {
         state.isLoading = false
@@ -104,6 +122,5 @@ const reviewSlice = createSlice({
   },
 })
 
-export const { handleReviewChange, handleEditReview, clearReview } =
-  reviewSlice.actions
+export const { filtersUpdate, changePageReview } = reviewSlice.actions
 export default reviewSlice.reducer
