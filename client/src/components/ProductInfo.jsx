@@ -12,7 +12,7 @@ const ProductInfo = ({ image, name, price, id, amount, colors }) => {
           <FaSearch />
         </Link>
       </div>
-      <section>
+      <section className="wrapper">
         <h5>{name}</h5>
         <p>{formatPrice(price)}</p>
         {amount && <p>Amount: {amount}</p>}
@@ -87,6 +87,13 @@ const Wrapper = styled.article`
 
   p {
     margin: 0 0 5px 0;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .color-container {

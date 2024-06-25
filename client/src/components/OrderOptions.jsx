@@ -5,21 +5,25 @@ const OrderOptions = ({ name, value, handleChange, labelText }) => {
   return (
     <Wrapper>
       <form>
-        <label htmlFor={name}>{labelText}</label>
-        <select
-          name={name}
-          id={name}
-          value={value}
-          onChange={handleChange}
-          className="sort-input"
-        >
-          {name === 'sort' && <option value="all">All</option>}
-          <option value="paid">Paid</option>
-          <option value="pending">Pending</option>
-          <option value="delivered">Delevered</option>
-          <option value="failed">Failed</option>
-          <option value="canceled">Canceled</option>
-        </select>
+        <div className="form-row">
+          <label className="form-label" htmlFor={name}>
+            {labelText}
+          </label>
+          <select
+            name={name}
+            id={name}
+            value={value}
+            onChange={handleChange}
+            className="form-select"
+          >
+            {name === 'sort' && <option value="all">All</option>}
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="delivered">Delevered</option>
+            <option value="failed">Failed</option>
+            <option value="canceled">Canceled</option>
+          </select>
+        </div>
       </form>
     </Wrapper>
   )
@@ -74,17 +78,6 @@ const Wrapper = styled.section`
       background: var(--clr-black);
       color: var(--clr-white);
     }
-  }
-
-  .sort-input {
-    border-color: transparent;
-    font-size: 1rem;
-    text-transform: capitalize;
-    padding: 0.25rem 0.5rem;
-  }
-  label {
-    font-size: 1rem;
-    text-transform: capitalize;
   }
 `
 

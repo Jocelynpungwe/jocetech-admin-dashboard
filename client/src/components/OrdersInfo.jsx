@@ -56,6 +56,7 @@ const Wrapper = styled.article`
   span {
     text-align: center;
     align-self: center;
+    opacity: 0.5;
   }
 
   .status {

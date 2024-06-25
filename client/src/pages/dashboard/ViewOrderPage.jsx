@@ -8,7 +8,13 @@ import {
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { formatPrice } from '../../utils/helpers'
-import { Loading, Error, ProductInfo, OrderOptions } from '../../components'
+import {
+  Loading,
+  Error,
+  ProductInfo,
+  OrderOptions,
+  PageTitle,
+} from '../../components'
 import moment from 'moment'
 
 const ViewOrderPage = () => {
@@ -52,80 +58,118 @@ const ViewOrderPage = () => {
   }
 
   return (
-    <Wrapper>
-      <h3>View Single Order</h3>
-      <section>
-        {orderItems.map((order, index) => {
-          const {
-            image,
-            name,
-            amount,
-            price,
-            color,
-            product: productId,
-          } = order
+    <>
+      <PageTitle
+        name="View Single Order"
+        label="Back To Order"
+        linkName="orders"
+      />
+      <Wrapper>
+        <section>
+          {orderItems.map((order, index) => {
+            const {
+              image,
+              name,
+              amount,
+              price,
+              color,
+              product: productId,
+            } = order
 
-          return (
-            <div key={index} className="wrapper-div">
-              <ProductInfo
-                image={image}
-                name={name}
-                price={price}
-                id={productId}
-                amount={amount}
-                color={color}
-              />
+            console.log(order)
+
+            return (
+              <div key={index} className="wrapper-container">
+                <ProductInfo
+                  image={image}
+                  name={name}
+                  price={price}
+                  id={productId}
+                  amount={amount}
+                  colors={[`#${color}`]}
+                />
+              </div>
+            )
+          })}
+        </section>
+        <section className="shipping-container">
+          <div className="shipping wrapper-container">
+            <h5>Shipping Address</h5>
+            <p className="info">
+              <span>User Name : </span>
+              {shippingAddress.name}
+            </p>
+            <p className="info">
+              <span>User Email :</span> {shippingAddress.email}
+            </p>
+            <p className="info">
+              <span>Street :</span> {shippingAddress.line1}
+            </p>
+            <p className="info">
+              <span>City :</span> {shippingAddress.city}
+            </p>
+            <p className="info">
+              <span>Postal Code :</span> {shippingAddress.postal_code}
+            </p>
+            <p className="info">
+              <span>State :</span> {shippingAddress.state}
+            </p>
+            <p className="info">
+              <span>Country :</span> Canada
+            </p>
+          </div>
+          <div className="billing wrapper-container">
+            <h5>Billing Info</h5>
+            <p className="info">
+              <span>Shipping :</span>
+              {formatPrice(shippingFee)}
+            </p>
+            <p className="info">
+              <span>Tax :</span>
+              {formatPrice(tax)}
+            </p>
+            <p className="info">
+              <span>Subtotal :</span>
+              {formatPrice(subtotal)}
+            </p>
+            <div>
+              <p className="info">
+                <span>Placed Date :</span>{' '}
+                {moment(createdAt).format('YYYY-MM-DD')}
+              </p>
+              <p className="info">
+                <span>Total :</span>
+                {formatPrice(total)}
+              </p>
+              <p className="info">
+                <span>Status :</span>
+                {status}
+              </p>
+              <p className="info">
+                <span>Updated Date :</span>{' '}
+                {moment(updatedAt).format('YYYY-MM-DD')}
+              </p>
             </div>
-          )
-        })}
-      </section>
-      <section className="shipping-container">
-        <div className="wrapper-div">
-          <h5>Shipping Address</h5>
-          <p>User Name: {shippingAddress.name}</p>
-          <p>User Email: {shippingAddress.email}</p>
-          <p>Street: {shippingAddress.line1}</p>
-          <p>City: {shippingAddress.city}</p>
-          <p>Postal Code: {shippingAddress.postal_code}</p>
-          <p>State: {shippingAddress.state}</p>
-          <p>Country: Canada</p>
-        </div>
-        <div className="wrapper-div">
-          <h5>Billing Info</h5>
-          <p>Shipping: {formatPrice(shippingFee)}</p>
-          <p>Tax: {formatPrice(tax)}</p>
-          <p>Subtotal: {formatPrice(subtotal)}</p>
-          <div>
-            <p>Order Placed Date: {moment(createdAt).format('YYYY-MM-DD')}</p>
-            <p className="info">
-              <span>Total:</span>
-              {formatPrice(total)}
-            </p>
-            <p className="info">
-              <span>Status:</span>
-              {status}
-            </p>
-            <p>Order Updated Date: {moment(updatedAt).format('YYYY-MM-DD')}</p>
+            <div>
+              <OrderOptions
+                name="status"
+                value={completeStatus}
+                labelText="Select Status"
+                handleChange={handleStatusChange}
+              />
+              <button
+                className="btn btn-block"
+                onClick={() =>
+                  dispatch(completeOrder({ status: completeStatus, id }))
+                }
+              >
+                Update Status
+              </button>
+            </div>
           </div>
-          <div>
-            <OrderOptions
-              name="status"
-              value={completeStatus}
-              labelText="Select Status"
-              handleChange={handleStatusChange}
-            />
-            <button
-              className="btn primary-btn btn-block"
-              onClick={() =>
-                dispatch(completeOrder({ status: completeStatus, id }))
-              }
-            >
-              Update Status
-            </button>
-          </div>
-        </div>
-      </section>
-    </Wrapper>
+        </section>
+      </Wrapper>
+    </>
   )
 }
 
@@ -143,11 +187,8 @@ const Wrapper = styled.section`
     margin: 0 0 5px 0;
   }
 
-  .wrapper-div {
+  .wrapper-container {
     box-shadow: var(--shadow-4);
-    border-radius: var(--radius);
-    padding: 1rem;
-    background-color: var(--white);
   }
 
   .info {
@@ -160,12 +201,21 @@ const Wrapper = styled.section`
     }
   }
 
-  @media (min-width: 650px) {
+  .shipping-container {
+    margin-top: 1rem;
+    .shipping {
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (min-width: 750px) {
     .shipping-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-gap: 1rem;
-      margin-top: 1rem;
+      .shipping {
+        margin-bottom: none;
+      }
     }
   }
 `

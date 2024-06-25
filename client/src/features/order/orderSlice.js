@@ -2,24 +2,25 @@ import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import customeFetch from '../../utils/customeFetch'
 import { toast } from 'react-toastify'
 import { logoutUser } from '../user/userSlice'
-const initialBilling = {
-  address: {
-    line1: '',
-    city: '',
-    state: '',
-    postal_code: '',
-  },
-}
 
 const initialState = {
   allOrders: [],
   orderLoading: false,
   orderError: false,
-
-  singleOrder: null,
   sortAllOrders: [],
   status: 'pending',
   sort: 'all',
+  sortOptions: [
+    { Label: 'all', value: 'all' },
+    { Label: 'paid', value: 'paid' },
+    { Label: 'pending', value: 'pending' },
+    { Label: 'delivered', value: 'delivered' },
+    { Label: 'failed', value: 'failed' },
+    { Label: 'canceled', value: 'canceled' },
+  ],
+
+  singleOrder: null,
+
   orderState: [],
   monthlyOrder: [],
   mustOrderStats: [],
@@ -27,7 +28,6 @@ const initialState = {
 
   order: {},
   clientSecret: null,
-  ...initialBilling,
 }
 
 export const getAllOrders = createAsyncThunk(
@@ -151,12 +151,6 @@ const orderSlice = createSlice({
         return acc + current.total
       }, 0)
     },
-    clearOrder: (state) => {
-      state.address.line1 = initialBilling.address.line1
-      state.address.city = initialBilling.address.city
-      state.address.state = initialBilling.address.state
-      state.address.postal_code = initialBilling.address.postal_code
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -169,11 +163,12 @@ const orderSlice = createSlice({
         state.orderLoading = false
         state.orderError = false
         state.allOrders = orders
-        state.sortAllOrders = orders
+        state.sortAllOrders = orders.sort((a, b) => b.updatedAt - a.updatedAt)
       })
       .addCase(getAllOrders.rejected, (state, { payload }) => {
         state.orderLoading = false
         state.orderError = true
+        toast.error(payload)
       })
       .addCase(getOrderStats.pending, (state) => {
         state.orderLoading = true
@@ -190,6 +185,7 @@ const orderSlice = createSlice({
       .addCase(getOrderStats.rejected, (state, { payload }) => {
         state.orderLoading = false
         state.orderError = true
+        toast.error(payload)
       })
       .addCase(getSingleOrders.pending, (state, { payload }) => {
         state.orderLoading = true
@@ -238,12 +234,6 @@ const orderSlice = createSlice({
   },
 })
 
-export const {
-  sortOrder,
-  updateSort,
-  updateStatus,
-  toggleAddress,
-  totalSale,
-  clearOrder,
-} = orderSlice.actions
+export const { sortOrder, updateSort, updateStatus, toggleAddress, totalSale } =
+  orderSlice.actions
 export default orderSlice.reducer

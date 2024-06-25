@@ -56,7 +56,7 @@ const Filters = () => {
 
             <FormSelect
               name="category"
-              lebelText="category"
+              labelText="category"
               value={category}
               handleChange={filtersUpdate}
               arrayOptions={categories}
@@ -65,7 +65,7 @@ const Filters = () => {
             {/* company */}
             <FormSelect
               name="company"
-              lebelText="company"
+              labelText="company"
               value={company}
               handleChange={filtersUpdate}
               arrayOptions={companies}
@@ -74,7 +74,7 @@ const Filters = () => {
             {/* Sort */}
             <FormSelect
               name="sort"
-              lebelText="sort"
+              labelText="sort"
               value={sort}
               handleChange={handleSort}
               arrayOptions={sortOptions}

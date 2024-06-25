@@ -18,8 +18,8 @@ const Sort = () => {
     <Wrapper>
       <OrderOptions
         name="sort"
+        labelText="sort"
         value={sort}
-        labelText="sort by"
         handleChange={handleSortChange}
       />
     </Wrapper>
