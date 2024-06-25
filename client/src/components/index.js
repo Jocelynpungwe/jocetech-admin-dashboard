@@ -31,7 +31,8 @@ import FormTextArea from './FormTextArea'
 import FormRowDisplay from './FormRowDisplay'
 import ReviewInfo from './ReviewInfo'
 import Pagination from './Pagination'
-
+import ShippingInfo from './ShippingInfo'
+import BillingInfo from './BillingInfo'
 export {
   BigSidebar,
   Navbar,
@@ -65,4 +66,7 @@ export {
   FormTextArea,
   FormRowDisplay,
   ReviewInfo,
+  Pagination,
+  ShippingInfo,
+  BillingInfo,
 }

@@ -9,10 +9,12 @@ import {
 import { clearFilters } from '../product/productSlice'
 
 const initialState = {
+  isSideBarOpen: false,
   isLoading: false,
   isError: false,
-  isSideBarOpen: false,
   allUser: [],
+  searchUser: [],
+  text: '',
   singleUser: [],
   singleUserOrder: [],
   user: getUserFromLocalStorage(),
@@ -83,7 +85,6 @@ export const updateSingleUser = createAsyncThunk(
 export const updateUserPassword = createAsyncThunk(
   'user/updateUserPassword',
   async (user, thunkAPI) => {
-    console.log(user)
     try {
       const { data } = await customeFetch.patch(
         '/user/updateUserPassword',
@@ -114,6 +115,12 @@ const userSlice = createSlice({
   reducers: {
     toggleSideBar: (state) => {
       state.isSideBarOpen = !state.isSideBarOpen
+    },
+    filtersUpdate: (state, { payload }) => {
+      state.text = payload
+      state.searchUser = state.allUser.filter((user) =>
+        user.name.toLowerCase().startsWith(state.text)
+      )
     },
   },
   extraReducers: (builder) => {
@@ -156,7 +163,8 @@ const userSlice = createSlice({
         state.isLoading = false
         state.isError = false
         const { users } = payload
-        state.allUser = users
+        state.allUser = users.sort((a, b) => a.name.localeCompare(b.name))
+        state.searchUser = users.sort((a, b) => a.name.localeCompare(b.name))
       })
       .addCase(getAllUser.rejected, (state, { payload }) => {
         state.isLoading = false
@@ -228,5 +236,5 @@ const userSlice = createSlice({
   },
 })
 
-export const { toggleSideBar } = userSlice.actions
+export const { toggleSideBar, filtersUpdate } = userSlice.actions
 export default userSlice.reducer

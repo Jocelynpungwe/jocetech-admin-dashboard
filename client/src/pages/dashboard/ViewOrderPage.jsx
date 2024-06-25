@@ -7,13 +7,15 @@ import {
 } from '../../features/order/orderSlice'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { formatPrice } from '../../utils/helpers'
+
 import {
   Loading,
   Error,
   ProductInfo,
   OrderOptions,
   PageTitle,
+  ShippingInfo,
+  BillingInfo,
 } from '../../components'
 import moment from 'moment'
 
@@ -93,63 +95,24 @@ const ViewOrderPage = () => {
           })}
         </section>
         <section className="shipping-container">
-          <div className="shipping wrapper-container">
-            <h5>Shipping Address</h5>
-            <p className="info">
-              <span>User Name : </span>
-              {shippingAddress.name}
-            </p>
-            <p className="info">
-              <span>User Email :</span> {shippingAddress.email}
-            </p>
-            <p className="info">
-              <span>Street :</span> {shippingAddress.line1}
-            </p>
-            <p className="info">
-              <span>City :</span> {shippingAddress.city}
-            </p>
-            <p className="info">
-              <span>Postal Code :</span> {shippingAddress.postal_code}
-            </p>
-            <p className="info">
-              <span>State :</span> {shippingAddress.state}
-            </p>
-            <p className="info">
-              <span>Country :</span> Canada
-            </p>
-          </div>
-          <div className="billing wrapper-container">
-            <h5>Billing Info</h5>
-            <p className="info">
-              <span>Shipping :</span>
-              {formatPrice(shippingFee)}
-            </p>
-            <p className="info">
-              <span>Tax :</span>
-              {formatPrice(tax)}
-            </p>
-            <p className="info">
-              <span>Subtotal :</span>
-              {formatPrice(subtotal)}
-            </p>
-            <div>
-              <p className="info">
-                <span>Placed Date :</span>{' '}
-                {moment(createdAt).format('YYYY-MM-DD')}
-              </p>
-              <p className="info">
-                <span>Total :</span>
-                {formatPrice(total)}
-              </p>
-              <p className="info">
-                <span>Status :</span>
-                {status}
-              </p>
-              <p className="info">
-                <span>Updated Date :</span>{' '}
-                {moment(updatedAt).format('YYYY-MM-DD')}
-              </p>
-            </div>
+          <ShippingInfo
+            name={shippingAddress.name}
+            email={shippingAddress.email}
+            line1={shippingAddress.line1}
+            city={shippingAddress.city}
+            postal={shippingAddress.postal_code}
+            state={shippingAddress.state}
+          />
+          <div className="wrapper-container">
+            <BillingInfo
+              shippingFee={shippingFee}
+              tax={tax}
+              subtotal={subtotal}
+              createdAt={createdAt}
+              total={total}
+              status={status}
+              updatedAt={updatedAt}
+            />
             <div>
               <OrderOptions
                 name="status"
