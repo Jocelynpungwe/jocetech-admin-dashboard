@@ -35,15 +35,6 @@ const ReviewsPage = () => {
     return <Error />
   }
 
-  if (allReviews.length === 0) {
-    return (
-      <div className="wrapper-container">
-        <h3>View All Reviews</h3>
-        <h5> No Review history</h5>
-      </div>
-    )
-  }
-
   return (
     <>
       <Wrapper>
@@ -64,35 +55,43 @@ const ReviewsPage = () => {
             </form>
           </div>
         </div>
+        <section className="review-section">
+          {allReviews.length === 0 ? (
+            <h5> No Review history</h5>
+          ) : (
+            allReviews.map((review, index) => {
+              const formattedDate = moment(review.createdAt).format(
+                'Do MMMM YYYY'
+              )
+              return (
+                <article key={index} className="wrapper-container">
+                  <ProductInfo
+                    image={review.product.image}
+                    name={review.product.name}
+                    price={review.product.price}
+                    id={review.product.id}
+                  />
 
-        {allReviews.map((review, index) => {
-          const formattedDate = moment(review.createdAt).format('Do MMMM YYYY')
-          return (
-            <section key={index} className="review-section wrapper-container">
-              <div>
-                <ProductInfo
-                  image={review.product.image}
-                  name={review.product.name}
-                  price={review.product.price}
-                  id={review.product.id}
-                />
-                <Link
-                  to={`/customers/${review.user._id}`}
-                  className="btn btn-block"
-                >
-                  View User
-                </Link>
-              </div>
-              <ReviewInfo
-                rating={review.rating}
-                name={review.user.name}
-                date={formattedDate}
-                title={review.title}
-                comment={review.comment}
-              />
-            </section>
-          )
-        })}
+                  <ReviewInfo
+                    rating={review.rating}
+                    name={review.user.name}
+                    date={formattedDate}
+                    title={review.title}
+                    comment={review.comment}
+                  />
+                  <div>
+                    <Link
+                      to={`/customers/${review.user._id}`}
+                      className="btn btn-block"
+                    >
+                      View User
+                    </Link>
+                  </div>
+                </article>
+              )
+            })
+          )}
+        </section>
         {numOfPages > 1 && <Pagination pageTitle="reviews" />}
       </Wrapper>
     </>
@@ -102,13 +101,53 @@ const ReviewsPage = () => {
 const Wrapper = styled.section`
   .review-section {
     display: grid;
-    margin: 1rem 0;
+    margin-top: 1rem;
+
+    .wrapper-container {
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      margin-top: 1rem;
+    }
+  }
+  .review {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    p,
+    h5 {
+      margin: 0;
+    }
+
+    .info {
+      margin-bottom: 0.5rem;
+    }
+
+    .name {
+      margin-right: 0.5rem;
+    }
+
+    .comment {
+      margin-top: 0.5rem;
+    }
   }
 
   @media (min-width: 750px) {
     .review-section {
       grid-template-columns: 1fr 1fr;
-      grid-column-gap: 1rem;
+      grid-gap: 1rem;
+      .wrapper-container {
+        margin: 0;
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    .review-section {
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 

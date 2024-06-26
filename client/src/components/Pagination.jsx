@@ -2,7 +2,7 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { changePage } from '../features/product/productSlice'
-import { changePageReview } from '../features/review/reviewSlice'
+import { changePageReview, filtersUpdate } from '../features/review/reviewSlice'
 
 const Pagination = ({ pageTitle }) => {
   const { numOfPages, page } =
@@ -14,13 +14,19 @@ const Pagination = ({ pageTitle }) => {
   const pages = Array.from({ length: numOfPages }, (_, index) => {
     return index + 1
   })
+
+  const handleReview = (newPage) => {
+    dispatch(changePageReview(newPage))
+    dispatch(filtersUpdate(''))
+  }
+
   const nextPage = () => {
     let newPage = page + 1
     if (newPage > numOfPages) {
       newPage = 1
     }
     pageTitle === 'reviews'
-      ? dispatch(changePageReview(newPage))
+      ? handleReview(newPage)
       : dispatch(changePage(newPage))
   }
   const prevPage = () => {
@@ -30,7 +36,7 @@ const Pagination = ({ pageTitle }) => {
     }
 
     pageTitle === 'reviews'
-      ? dispatch(changePageReview(newPage))
+      ? handleReview(newPage)
       : dispatch(changePage(newPage))
   }
 
@@ -49,7 +55,7 @@ const Pagination = ({ pageTitle }) => {
               key={pageNumber}
               onClick={() => {
                 pageTitle === 'reviews'
-                  ? dispatch(changePageReview(pageNumber))
+                  ? handleReview(pageNumber)
                   : dispatch(changePage(pageNumber))
               }}
             >

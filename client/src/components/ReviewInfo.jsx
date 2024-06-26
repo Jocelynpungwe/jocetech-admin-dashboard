@@ -12,7 +12,7 @@ const ReviewInfo = ({ rating, name, date, title, comment }) => {
           <p className="date">{date}</p>
         </div>
         <h5>{title}</h5>
-        <p>{comment}</p>
+        <p className="comment">{comment}</p>
       </div>
     </Wrapper>
   )

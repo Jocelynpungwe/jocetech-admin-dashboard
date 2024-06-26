@@ -22,7 +22,7 @@ export const getAllReviews = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { page } = thunkAPI.getState().review
-      const { data } = await customeFetch.get(`/reviews?${page}`)
+      const { data } = await customeFetch.get(`/reviews?page=${page}`)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -65,7 +65,6 @@ const reviewSlice = createSlice({
       )
     },
     changePageReview: (state, { payload }) => {
-      console.log(payload)
       state.page = payload
     },
   },
