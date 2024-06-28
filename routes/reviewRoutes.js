@@ -13,6 +13,7 @@ const {
 
 const authenticationMiddleware = require('../middleware/authentication')
 const authorizePermition = require('../middleware/authorize')
+const testUserMiddleware = require('../middleware/testUser')
 
 router.get('/', authenticationMiddleware, getAllReviews)
 router.get('/:id', authenticationMiddleware, getSingleReview)
@@ -24,6 +25,11 @@ router.get(
 )
 router.post('/', authenticationMiddleware, createReview)
 router.patch('/:id', authenticationMiddleware, updateReview)
-router.delete('/:id', authenticationMiddleware, deleteReview)
+router.delete(
+  '/:id',
+  authenticationMiddleware,
+  testUserMiddleware,
+  deleteReview
+)
 
 module.exports = router

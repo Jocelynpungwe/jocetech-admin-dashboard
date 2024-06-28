@@ -235,7 +235,6 @@ const AddProductPage = () => {
             value={new_products.freeShipping}
             labelText="Free Shipping"
             type="checkbox"
-            required
             handleChange={(e) =>
               dispatch(
                 handleChange({
@@ -252,7 +251,6 @@ const AddProductPage = () => {
             value={new_products.featured}
             labelText="featured"
             type="checkbox"
-            required
             handleChange={(e) =>
               dispatch(
                 handleChange({

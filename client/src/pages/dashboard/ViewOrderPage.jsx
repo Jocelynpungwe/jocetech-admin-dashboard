@@ -17,7 +17,6 @@ import {
   ShippingInfo,
   BillingInfo,
 } from '../../components'
-import moment from 'moment'
 
 const ViewOrderPage = () => {
   const { id } = useParams()
@@ -77,8 +76,6 @@ const ViewOrderPage = () => {
               color,
               product: productId,
             } = order
-
-            console.log(order)
 
             return (
               <div key={index} className="wrapper-container">

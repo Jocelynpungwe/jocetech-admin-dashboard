@@ -25,7 +25,6 @@ export const loginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const { data } = await customeFetch.post('/auth/login', user)
-
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
@@ -53,6 +52,10 @@ export const getAllUser = createAsyncThunk(
       const { data } = await customeFetch.get('/user')
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -65,6 +68,10 @@ export const getSingleUser = createAsyncThunk(
       const { data } = await customeFetch.get(`/user/${id}`)
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -77,6 +84,10 @@ export const updateSingleUser = createAsyncThunk(
       const { data } = await customeFetch.patch('/user/updateUser', user)
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -92,6 +103,10 @@ export const updateUserPassword = createAsyncThunk(
       )
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -104,6 +119,10 @@ export const getSingleUserOrder = createAsyncThunk(
       const { data } = await customeFetch.get(`/orders/user/${id}`)
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }

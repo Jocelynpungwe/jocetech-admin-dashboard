@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import customeFetch from '../../utils/customeFetch'
 
 import { toast } from 'react-toastify'
+import { logoutUser } from '../user/userSlice'
 
 const initialState = {
   allReviews: [],
@@ -25,6 +26,10 @@ export const getAllReviews = createAsyncThunk(
       const { data } = await customeFetch.get(`/reviews?page=${page}`)
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -37,6 +42,10 @@ export const getSingleReview = createAsyncThunk(
       const { data } = await customeFetch.get(`/reviews/${id}`)
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -49,6 +58,10 @@ export const getSingleUserReview = createAsyncThunk(
       const { data } = await customeFetch.get(`/reviews/user/${id}`)
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }

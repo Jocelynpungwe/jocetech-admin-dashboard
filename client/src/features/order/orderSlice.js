@@ -56,7 +56,6 @@ export const getOrderStats = createAsyncThunk(
       if (error.response.status === 401) {
         thunkAPI.dispatch(logoutUser('Authentication Invalid'))
       }
-
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -71,7 +70,7 @@ export const getSingleOrders = createAsyncThunk(
       return data
     } catch (error) {
       if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser())
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
       }
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
@@ -90,8 +89,9 @@ export const completeOrder = createAsyncThunk(
       return data
     } catch (error) {
       if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser())
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
       }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -110,6 +110,10 @@ export const updateOrder = createAsyncThunk(
 
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }

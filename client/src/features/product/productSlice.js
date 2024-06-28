@@ -1,12 +1,13 @@
-import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import customeFetch from '../../utils/customeFetch'
 import { toast } from 'react-toastify'
+import { logoutUser } from '../user/userSlice'
 
 const initialProduct = {
   new_products: {
     name: '',
     price: 0,
-    image: [],
+    image: ['/uploads/no-product-image.jpeg'],
     colors: ['#222'],
     valueColor: '',
     description: '',
@@ -67,6 +68,10 @@ export const getAllProducts = createAsyncThunk(
       const { data } = await customeFetch.get('/products')
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -84,6 +89,10 @@ export const uploadImage = createAsyncThunk(
 
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -97,6 +106,10 @@ export const getSingleProduct = createAsyncThunk(
 
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -112,6 +125,10 @@ export const getSingleProductReview = createAsyncThunk(
       )
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -125,6 +142,10 @@ export const createProduct = createAsyncThunk(
 
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -139,6 +160,10 @@ export const updateProduct = createAsyncThunk(
 
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }
@@ -152,6 +177,10 @@ export const deleteProduct = createAsyncThunk(
       thunkAPI.dispatch(getAllProducts())
       return data
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser('Authentication Invalid'))
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg)
     }
   }

@@ -13,6 +13,7 @@ const { getSingleProductReviews } = require('../controllers/reviewController')
 
 const authenticationMiddleware = require('../middleware/authentication')
 const authorizeMiddleware = require('../middleware/authorize')
+const testUserMiddleware = require('../middleware/testUser')
 
 router.get('/', getAllProducts)
 router.get('/:id', getSingleProduct)
@@ -32,6 +33,7 @@ router.delete(
   '/:id',
   authenticationMiddleware,
   authorizeMiddleware('admin'),
+  testUserMiddleware,
   deleteProduct
 )
 router.post(
