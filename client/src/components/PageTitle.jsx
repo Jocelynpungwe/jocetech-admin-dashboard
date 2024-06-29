@@ -10,7 +10,7 @@ const AddItems = ({ name, label, linkName, page }) => {
   return (
     <Wrapper>
       <div className="info wrapper-container">
-        <h3 className="title">{name}</h3>
+        <h4 className="title">{name}</h4>
         {page === 'product-page' ? (
           <Link
             onClick={() => {
@@ -18,12 +18,12 @@ const AddItems = ({ name, label, linkName, page }) => {
               dispatch(clearNewProduct())
             }}
             to={`/${linkName}`}
-            className="btn primary-btn"
+            className="btn "
           >
             {label}
           </Link>
         ) : (
-          <Link to={`/${linkName}`} className="btn primary-btn">
+          <Link to={`/${linkName}`} className="btn">
             {label}
           </Link>
         )}

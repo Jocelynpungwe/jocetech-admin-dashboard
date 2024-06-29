@@ -7,7 +7,7 @@ const Logo = () => {
       <div className="letter-container">
         <span>J</span>
       </div>
-      <div>
+      <div className="logo-hide">
         <h3>
           <span className="info-admin">Admin</span>
         </h3>
@@ -47,6 +47,12 @@ const Wrapper = styled.section`
   .info-admin {
     font-size: 1.5rem;
     font-weight: 700;
+  }
+
+  @media (max-width: 380px) {
+    .logo-hide {
+      display: none;
+    }
   }
 `
 

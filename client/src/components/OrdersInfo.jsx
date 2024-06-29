@@ -38,9 +38,16 @@ const OrdersInfo = ({ shippingAddress, total, status, updatedAt, id }) => {
 }
 
 const Wrapper = styled.article`
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border-bottom: 1px var(--grey-100) solid;
   padding: 1rem;
+
+  .primary-btn {
+    width: 100%;
+  }
 
   h6,
   h7 {
@@ -66,9 +73,11 @@ const Wrapper = styled.article`
   }
 
   @media (min-width: 768px) {
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto;
 
     .primary-btn {
+      text-align: center;
       padding: 0.5rem 1rem;
       font-size: 1rem;
     }

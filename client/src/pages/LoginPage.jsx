@@ -64,6 +64,7 @@ const LoginPage = () => {
           type="password"
           handleChange={handleChange}
         />
+        <input type="name" value="value" name="value" />
         <button
           type="button"
           className="btn btn-block btn-hipster"
