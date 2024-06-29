@@ -80,23 +80,29 @@ const AddProductPage = () => {
         page="add-product-page"
       />
       <form onSubmit={handleSubmit}>
-        <FormRow
-          name="name"
-          value={new_products.name}
-          labelText="Product Name"
-          type="text"
-          placeholder="Type here"
-          required
-          handleChange={(e) =>
-            dispatch(
-              handleChange({
-                name: e.target.name,
-                value: e.target.value,
-                type: e.target.type,
-              })
-            )
-          }
-        />
+        <div className="form-row">
+          <label htmlFor="name" className="form-label">
+            name
+          </label>
+          <input
+            name="name"
+            value={new_products.name}
+            labelText="Product Name"
+            type="text"
+            placeholder="Type here"
+            required
+            handleChange={(e) =>
+              dispatch(
+                handleChange({
+                  name: e.target.name,
+                  value: e.target.value,
+                  type: e.target.type,
+                })
+              )
+            }
+            className="form-input"
+          />
+        </div>
         <FormRowDisplay
           name="image"
           lebelText="Image"

@@ -57,36 +57,59 @@ const SettingsPage = () => {
           {!isResetPassword ? (
             <>
               <h5>Update User Info</h5>
-              <FormRow
-                name="name"
-                value={userInfo.name}
-                type="text"
-                handleChange={handleChange}
-              />
-              <FormRow
-                name="email"
-                value={userInfo.email}
-                type="email"
-                handleChange={handleChange}
-              />
+              <div className="form-row">
+                <label htmlFor="name" className="form-label">
+                  name
+                </label>
+                <input
+                  name="name"
+                  value={userInfo.name}
+                  type="text"
+                  handleChange={handleChange}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="email" className="form-label">
+                  email
+                </label>
+                <input
+                  name="email"
+                  value={userInfo.email}
+                  type="email"
+                  handleChange={handleChange}
+                  className="form-input"
+                />
+              </div>
             </>
           ) : (
             <>
               <h5>Reset Password</h5>
-              <FormRow
-                name="oldPassword"
-                labelText="Old Password"
-                value={userInfo.oldPassword}
-                type="password"
-                handleChange={handleChange}
-              />
-              <FormRow
-                name="newPassword"
-                labelText="New Password"
-                value={userInfo.newPassword}
-                type="password"
-                handleChange={handleChange}
-              />
+              <div className="form-row">
+                <label htmlFor="oldPassword" className="form-label">
+                  Old Password
+                </label>
+                <input
+                  FormRow
+                  name="oldPassword"
+                  value={userInfo.oldPassword}
+                  type="password"
+                  handleChange={handleChange}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="newPassword" className="form-label">
+                  New Password
+                </label>
+                <input
+                  name="newPassword"
+                  value={userInfo.newPassword}
+                  type="password"
+                  handleChange={handleChange}
+                  className="form-input"
+                />
+              </div>
             </>
           )}
           <div className="btn-container">
