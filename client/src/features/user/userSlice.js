@@ -24,7 +24,7 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (user, thunkAPI) => {
     try {
-      const { data } = await customeFetch.post('/auth/login', user)
+      const { data } = await customeFetch.post('/auth/loginAdmin', user)
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg)
