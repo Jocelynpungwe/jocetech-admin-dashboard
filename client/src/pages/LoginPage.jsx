@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Logo, FormRow } from '../components'
+import { Logo } from '../components'
 import { toast } from 'react-toastify'
 import { loginUser } from '../features/user/userSlice'
 import { useSelector, useDispatch } from 'react-redux'
@@ -52,19 +52,32 @@ const LoginPage = () => {
           <Logo />
         </div>
         <h3>Login</h3>
-        <FormRow
-          name="email"
-          value={values.email}
-          type="email"
-          handleChange={handleChange}
-        />
-        <FormRow
-          name="password"
-          value={values.password}
-          type="password"
-          handleChange={handleChange}
-        />
-        <input type="name" value="value" name="value" />
+        <div className="form-row">
+          <label htmlFor="email" className="form-label">
+            email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={values.email}
+            name="email"
+            onChange={handleChange}
+            className="form-input"
+          />
+        </div>
+        <div className="form-row">
+          <label htmlFor="password" className="form-label">
+            password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={values.password}
+            name="password"
+            onChange={handleChange}
+            className="form-input"
+          />
+        </div>
         <button
           type="button"
           className="btn btn-block btn-hipster"

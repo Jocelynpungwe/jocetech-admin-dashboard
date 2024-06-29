@@ -49,7 +49,7 @@ const Wrapper = styled.section`
     font-weight: 700;
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 550px) {
     .logo-hide {
       display: none;
     }
