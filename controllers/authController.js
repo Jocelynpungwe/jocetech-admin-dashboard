@@ -40,6 +40,10 @@ const loginUser = async (req, res) => {
     throw new UnauthenticatedError('Invalid Credentials')
   }
 
+  if (user.role === 'user') {
+    throw new UnauthorizedError('Not Permmited To Access Route ')
+  }
+
   const isMatchPassword = await user.comparePassword(password)
 
   if (!isMatchPassword) {
