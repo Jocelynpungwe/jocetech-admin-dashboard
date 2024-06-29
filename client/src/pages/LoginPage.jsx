@@ -69,7 +69,9 @@ const LoginPage = () => {
           className="btn btn-block btn-hipster"
           disabled={isLoading}
           onClick={() => {
-            dispatch(loginUser({ email: 'test@gmail.com', password: 'secret' }))
+            dispatch(
+              loginUser({ email: 'test@gmail.com', password: 'testPassword' })
+            )
           }}
         >
           {isLoading ? 'loading...' : 'admin demo'}
